@@ -6,9 +6,9 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(global-display-line-numbers-mode 1)
-
+;; Highlight current line
 (hl-line-mode 1)
+;; Let the cursor blink
 (blink-cursor-mode 1)
 
 ;; Record recently opened file

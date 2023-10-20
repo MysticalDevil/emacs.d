@@ -23,4 +23,10 @@
 (use-package emacs
   :config (defalias 'yes-or-no-p 'y-or-n-p))
 
+;; Show line number
+(use-package emacs
+  :config
+  (setq display-line-numbers-type 'absolute)
+  (global-display-line-numbers-mode 1))
+
 (provide 'init-package)
