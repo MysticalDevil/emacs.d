@@ -7,6 +7,7 @@ custom-vars.el
 /.session
 /session.*
 /custom.el
+/places
 *.elc
 CVS
 .svn
@@ -19,6 +20,7 @@ CVS
 cookies
 /newsticker
 \#*
+\.\#*
 /tree-sitter
 /elpa
 /elpa-*
