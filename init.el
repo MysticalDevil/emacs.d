@@ -11,4 +11,3 @@
 (require 'init-program)
 
 (require 'init-ui)
-(put 'upcase-region 'disabled nil)
