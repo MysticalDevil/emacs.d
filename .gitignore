@@ -1,5 +1,6 @@
 custom-vars.el
 
+/straight
 /url/cache
 /.emacs.desktop
 /auto-save-list
