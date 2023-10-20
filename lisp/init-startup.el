@@ -38,4 +38,7 @@
 (set-keyboard-coding-system 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
 
+;; Set garbage colection threshold to improve startup speed
+(setq gc-conc-threshold most-positive-fixnum)
+
 (provide 'init-startup)
