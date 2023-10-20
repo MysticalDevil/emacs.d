@@ -10,7 +10,7 @@
   (package-initialize))
 
 (unless package-archive-contents
-  (packagerefresh-contents))
+  (package-refresh-contents))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
