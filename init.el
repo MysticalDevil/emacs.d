@@ -1,8 +1,3 @@
-;;(require 'package)
-;;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-;;(package-initialize)
-;;(package-refresh-contents)
-
 (setq inhibit-startup-message t ; Don't show the splash screen
       visible-bell nil)         ; Flash when the bell right
 
@@ -27,7 +22,7 @@
 (save-place-mode 1)
 
 ;; Move customization variables to a separate file and load it
-(setq custom-file (locate-user-emacs-file "curtom-vars.el"))
+(setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
 
 ;; Don't pop up UI dialogs when prompting
@@ -38,3 +33,44 @@
 
 ;; Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
+
+
+;; Set package center mirrors
+(setq package-archives '(("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+			 ("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+			 ("org" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/org/")))
+
+(setq package-check-signature nil) ; Don't check signatures
+(require 'package)
+
+(unless (bound-and-true-p package--initialized)
+  (package-initialize))
+
+(unless package-archive-contents
+  (packagerefresh-contents))
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+;; Use use-package to manage extensions
+(setq use-package-always-ensure t ; Global ensure keyword
+      use-package-always-defer t ; Global defer load keyword
+      use-package-always-demand nil
+      use-package-expand-minimally t
+      use-package-verbose t)
+
+(require 'use-package)
+
+(use-package restart-emacs) ; Restart emacs from within emacs
+
+(use-package atom-one-dark-theme ; Atom one dark theme
+  :init (load-theme 'atom-one-dark t))
+
+;; An atom-one-dark theme for smart-mode-line
+(use-package smart-mode-line-atom-one-dark-theme)
+
+(use-package smart-mode-line ; A coded smart mode-line
+  :init (setq sml/no-confirm-load-theme t
+	      sml/theme 'atom-one-dark)
+  (sml/setup))
