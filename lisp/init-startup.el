@@ -19,7 +19,8 @@
 
 ;; Move customization variables to a separate file and load it
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
-(load custom-file 'noerror 'nomessage)
+(when (file-exists-p custom-file)
+  (load custom-file 'noerror 'nomessage))
 
 ;; Don't pop up UI dialogs when prompting
 (setq use-dialog-box nil)
