@@ -1,7 +1,8 @@
 ;; Set package center mirrors
 (setq package-archives '(("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
 			 ("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-			 ("org" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/org/")))
+			 ("org" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+			 ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")))
 
 (setq package-check-signature nil) ; Don't check signatures
 (require 'package)
