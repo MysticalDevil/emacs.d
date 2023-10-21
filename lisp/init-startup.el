@@ -6,10 +6,13 @@
 (setq inhibit-startup-message t ; Don't show the splash screen
       visible-bell nil)         ; Flash when the bell right
 
-;; Turn off some unneeded UI elements
-(menu-bar-mode 1)
+;; disable the bars
+(if (and (display-graphic-p) (eq system-type 'darwin))
+    (menu-bar-mode 1)
+  (menu-bar-mode -1))
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(toggle-frame-maximized)
 
 ;; Highlight current line
 (hl-line-mode 1)

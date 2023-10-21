@@ -68,7 +68,7 @@
   :after (ivy)
   :bind (("M-x" . counsel-M-x)
 	 ("C-x C-f" . counsel-find-file)
-	 ("C-c f" . counsel-recentf)
+	 ("C-c r" . counsel-recentf)
 	 ("C-c g" . counsel-git)))
 
 (use-package swiper
@@ -112,6 +112,25 @@
 (use-package mwim
   :bind (("C-a" . 'mwim-beginning)
 	 ("C-e" . 'mwim-end)))
+
+;; Auto update packages
+;; this maybe useful, if you want to update all the packages with command, just like me
+(use-package auto-package-update
+  :init (setq auto-package-update-delete-old-versions t
+	      auto-package-update-hide-results t))
+
+;; format all, formatter for almost languages
+;; great for programmers
+(use-package format-all
+  :diminish
+  :hook (prog-mode . format-all-ensure-formatter)
+  :bind ("C-c f" . #'format-all-buffer))
+
+;; Show the delimiters as rainbow color
+(use-package rainbow-delimiters
+  :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+(use-package highlight-parentheses
+  :init (add-hook 'prog-mode-hook 'highlight-parentheses-mode))
 
 (provide 'init-package)
 ;;; init-package.el ends here

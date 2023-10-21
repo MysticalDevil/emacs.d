@@ -13,7 +13,7 @@
 ;; A coded smart mode-line
 (use-package smart-mode-line
   :init (setq sml/no-confirm-load-theme t
-         sml/theme 'atom-one-dark)
+              sml/theme 'atom-one-dark)
   (sml/setup)
   :config
   (setq rm-blacklist
@@ -45,10 +45,35 @@
   (dashboard-open)
   (add-hook 'find-file-hook
 	    (lambda ()
-	      (when (string= (file-name-extension buffer-file-name) "dashboard")
+	      (when (string= (file-name-extension buffer-file-name) "*dashboard*")
 		(line-number-mode -1))))
   :config
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+  ;; Set the title
+  (setq dashboard-banner-logo-title "Welcome to Emacs Dashboard")
+  ;; Set the banner
+  (setq dashboard-startup-banner [VALUE])
+  ;; Value can be
+  ;; - nil to display no banner
+  ;; - 'official which displays the official emacs logo
+  ;; - 'logo which displays an alternative emacs logo
+  ;; - 1, 2 or 3 which displays one of the text banners
+  ;; - "path/to/your/image.gif", "path/to/your/image.png" or "path/to/your/text.txt" which displays whatever gif/image/text you would prefer
+  ;; - a cons of '("path/to/your/image.png" . "path/to/your/text.txt")
+
+  ;; Content is not centered by default. To center, set
+  (setq dashboard-center-content t)
+
+  ;; To disable shortcut "jump" indicators for each section, set
+  (setq dashboard-show-shortcuts nil)
+
+  (setq dashboard-items '((recents  . 5)
+                          (bookmarks . 5)
+                          (projects . 5)
+                          (agenda . 5)
+                          (registers . 5))))
+
+
 
 ;; Change font on windows to reduce lag
 (use-package emacs
@@ -63,11 +88,11 @@
                             charset (font-spec :family "Microsoft Yahei Mono" :size 12))))
     (set-face-attribute 'default nil :font "MesloLGS Nerd Font")))
 
-;; Show line number
-(use-package emacs
-  :config
-  (setq display-line-numbers-type 'absolute)
-  (global-display-line-numbers-mode 1))
+;; Line Number
+;; this package introduced in Emacs 26, so only enabled when 26+
+(use-package display-line-numbers
+  :if (> emacs-major-version 26)
+  :hook (prog-mode . display-line-numbers-mode))
 
 (provide 'init-ui)
 ;;; init-ui.el ends here
