@@ -108,5 +108,10 @@
   :init (global-undo-tree-mode)
   :custom (undo-tree-auto-save-history nil))
 
+;; Emacs package that displays available keybindings in popup
+(use-package which-key
+  :defer nil
+  :config (which-key-mode))
+
 (provide 'init-package)
 ;;; init-package.el ends here
