@@ -36,7 +36,10 @@
 
 ;; A Collection of Ridiculously Useful eXtensions for Emacs
 (use-package crux
-  :bind ("C-c k" . crux-smart-kill-line))
+  :bind (("C-c k" . crux-smart-kill-line)
+	 ("C-a" . crux-move-beginning-of-line)
+	 ("C-c ^" . crux-top-join-line)
+	 ("C-x ," . crux-find-user-init-file)))
 
 ;; Enables hungry deletion in all modes.
 (use-package hungry-delete
