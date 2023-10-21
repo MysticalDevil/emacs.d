@@ -1,4 +1,4 @@
-;;; init-lsp.el -- LSP about settings
+;;; init-ide.el -- IDE about settings
 
 ;;; Commentary:
 ;;; Code:
@@ -87,6 +87,43 @@
   :config (setq truncate-lines nil)
   :hook (prog-mode . flycheck-mode))
 
+;; Project Interaction Library for Emacs
+(use-package projectile
+  :ensure t
+  :bind (("C-c p" . projectile-command-map))
+  :config
+  (setq projectile-mode-line "Projectile")
+  (setq projectile-track-known-projects-automatically nil))
+
+(use-package counsel-projectile
+  :ensure t
+  :after (projectile)
+  :init (counsel-projectile-mode))
+
+;; A Git Porcelain inside Emacs
+(use-package magit)
+
+;; Treemacs - a tree layout file explorer for Emacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  :config
+  (treemacs-tag-follow-mode)
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ;; ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag))
+  (:map treemacs-mode-map
+	("/" . treemacs-advanced-helpful-hydra)))
+
+(use-package treemacs-projectile
+  :ensure t
+  :after (treemacs projectile))
+
 ;; If you like debugging in Emacs, enable the next lines.
 ;; I disabled it, as it imports too many dependencies.Such as:
 ;; posframe,lsp-treemacs(dash, treemacs[hydra(cl-lib), ace-window(avy)])
@@ -108,5 +145,42 @@
 (use-package lispy
   :init (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
 
-(provide 'init-lsp)
-;;; init-lsp.el ends here
+;; Rust
+(use-package rust-mode
+  :functions dap-register-debug-template
+  :bind
+  ("C-c C-c" . rust-run)
+  :hook
+  (rust-mode . lsp-deferred)
+  :config
+  ;; debug
+  (require 'dap-gdb-lldb)
+  (dap-register-debug-template "Rust::LLDB Run Configuration"
+                               (list :type "lldb"
+				     :request "launch"
+			             :name "rust-lldb::Run"
+				     :gdbpath "rust-lldb"
+				     :target nil
+				     :cwd nil)))
+
+(use-package cargo
+  :hook
+  (rust-mode . cargo-minor-mode))
+
+;; Python
+(use-package python
+  :defer t
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python3" . python-mode)
+  :config
+  ;; for debug
+  (require 'dap-python))
+
+(use-package pyvenv
+  :config
+  (setq python-shell-interpreter "python3")
+  (pyvenv-mode t))
+
+
+(provide 'init-ide)
+;;; init-ide.el ends here

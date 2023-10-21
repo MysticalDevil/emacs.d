@@ -1,5 +1,6 @@
 custom-vars.el
 amx-items
+flycheck_.*
 /straight
 /url/cache
 /.emacs.desktop
