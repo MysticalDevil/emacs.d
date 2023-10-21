@@ -10,12 +10,19 @@
   :hook (after-init . benchmark-init/deactivate))
 
 ;; Tree sitter
-(use-package tree-sitter-langs)
-(use-package tree-sitter
-  :after tree-sitter-langs
-  :config
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+(when (not *ts-avaiable*)
+  (use-package tree-sitter-langs)
+  (use-package tree-sitter
+    :after tree-sitter-langs
+    :config
+    (global-tree-sitter-mode)
+    (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)))
+
+(when *ts-avaiable*
+  (use-package treesit-auto
+    :config
+    (global-treesit-auto-mode)
+    (setq treesit-auto-install 'prompt)))
 
 ;; Use y_n to replace yes_no
 (use-package emacs

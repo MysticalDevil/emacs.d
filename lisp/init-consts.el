@@ -2,4 +2,6 @@
 (defconst *is-linux* (eq system-type 'gnu/linux))
 (defconst *is-windows* (or (eq system-type 'ms-dos) (eq system-type 'windows-nt)))
 
+(defconst *ts-avaiable* (or (>= emacs-major-version 29) (treesit-available-p)))
+
 (provide 'init-consts)
