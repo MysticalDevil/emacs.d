@@ -113,5 +113,9 @@
   :defer nil
   :config (which-key-mode))
 
+;; An alternative M-x interface for Emacs.
+(use-package amx
+  :init (amx-mode))
+
 (provide 'init-package)
 ;;; init-package.el ends here
