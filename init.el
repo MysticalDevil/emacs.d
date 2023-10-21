@@ -13,7 +13,6 @@
 (require 'init-package)
 (require 'init-kbd)
 (require 'init-ide)
-(require 'init-program)
 
 (require 'init-ui)
 ;;; init.el ends here
