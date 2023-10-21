@@ -35,7 +35,12 @@
 
 ;; Enables hungry deletion in all modes.
 (use-package hungry-delete
-  :bind ("C-c DEL" . hungry-delete-backward)
-  :bind ("C-c d" . hungry-delete-forward))
+  :bind (("C-c DEL" . hungry-delete-backward)
+	 ("C-c d" . hungry-delete-forward)))
+
+;; Drag stuff around in Emacs
+(use-package drag-stuff
+  :bind (("<M-up>" . drag-stuff-up)
+	 ("<M-down>" . drag-stuff-down)))
 
 (provide 'init-package)
