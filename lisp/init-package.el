@@ -62,7 +62,8 @@
 	ivy-initial-inputs-alist nil
 	ivy-count-format "[%d/%d]"
 	enable-recursive-minibuffers t
-	ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
+	ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
+  (ivy-posframe-mode 1))
 
 (use-package counsel
   :after (ivy)
@@ -77,6 +78,18 @@
 	 ("C-r" . swiper-isearch-forward))
   :config (setq swiper-action-recenter t
 		swiper-include-line-number-in-search t))
+
+;; ivy-posframe is a ivy extension, which let ivy use posframe to show its candidate menu
+(use-package ivy-posframe
+  :init
+  (setq ivy-posframe-display-functions-alist
+	'((swiper . ivy-posframe-display-at-frame-center)
+	  (complete-symbol . ivy-posframe-display-at-point)
+	  (counse-M-x . ivy-posframe-display-at-frame-center)
+	  (counsel-find-file . ivy-posframe-display-at-frame-center)
+	  (ivy-switch-buffer . ivy-posframe-display-at-frame-center)
+	  (t . ivy-posframe-display-at-frame-center))))
+
 
 ;; Modular in-buffer completion framework for Emacs
 (use-package company
