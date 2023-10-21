@@ -20,9 +20,10 @@
 
 (when *ts-avaiable*
   (use-package treesit-auto
+    :demand t
     :config
-    (global-treesit-auto-mode)
-    (setq treesit-auto-install 'prompt)))
+    (setq treesit-auto-install 'prompt)
+    (global-treesit-auto-mode)))
 
 ;; Use y_n to replace yes_no
 (use-package emacs
