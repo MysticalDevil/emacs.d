@@ -97,8 +97,8 @@
 
 ;; On-the-fly syntax checking
 (use-package flycheck
-  :hook (after-init . global-flycheck-mode))
-					; :hook (prog-mode . flycheck-mode) enable on programing languages
+  :config (setq truncate-lines nil)
+  :hook (prog-mode . flycheck-mode))
 
 ;; Enhanced the undo operate
 (use-package undo-tree

@@ -1,3 +1,8 @@
+;;; init-elpa.el -- Package source and package manager settings
+
+;;; Commentary:
+;;; Code:
+
 ;; Set package center mirrors
 (setq package-archives '(("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
 			 ("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
@@ -42,3 +47,4 @@
 (straight-use-package 'use-package)
 
 (provide 'init-elpa)
+;;; init-elpa.el ends here

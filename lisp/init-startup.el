@@ -1,3 +1,8 @@
+;;; init-startup.el -- Settings at startup
+
+;;; Commentary:
+;;; Code:
+
 (setq inhibit-startup-message t ; Don't show the splash screen
       visible-bell nil)         ; Flash when the bell right
 
@@ -42,3 +47,4 @@
 (setq gc-conc-threshold most-positive-fixnum)
 
 (provide 'init-startup)
+;;; init-startup.el ends here

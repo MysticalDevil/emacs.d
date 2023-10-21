@@ -1,3 +1,8 @@
+;;; init.el -- The emacs config startup file
+
+;;; Commentary:
+;;; Code:
+
 ;; Load the `lisp` directory
 (add-to-list 'load-path (expand-file-name (concat user-emacs-directory "lisp")))
 
@@ -11,3 +16,4 @@
 (require 'init-program)
 
 (require 'init-ui)
+;;; init.el ends here
