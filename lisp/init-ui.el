@@ -24,6 +24,14 @@
 (use-package good-scroll
   :init (good-scroll-mode 1))
 
+;; A utility package to collect various Icon Fonts and propertize them within Emacs.
+(use-package all-the-icons
+  :if (display-graphic-p))
+
+;; A company front-end with icons
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
 ;; Change font on windows to reduce lag
 (use-package emacs
   :if (display-graphic-p)
