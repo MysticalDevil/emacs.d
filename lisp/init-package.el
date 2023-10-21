@@ -62,8 +62,7 @@
 	ivy-initial-inputs-alist nil
 	ivy-count-format "[%d/%d]"
 	enable-recursive-minibuffers t
-	ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
-  (ivy-posframe-mode 1))
+	ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
 
 (use-package counsel
   :after (ivy)
@@ -88,7 +87,8 @@
 	  (counse-M-x . ivy-posframe-display-at-frame-center)
 	  (counsel-find-file . ivy-posframe-display-at-frame-center)
 	  (ivy-switch-buffer . ivy-posframe-display-at-frame-center)
-	  (t . ivy-posframe-display-at-frame-center))))
+	  (t . ivy-posframe-display-at-frame-center)))
+  (ivy-posframe-mode 1))
 
 
 ;; Modular in-buffer completion framework for Emacs
@@ -129,6 +129,15 @@
 ;; An alternative M-x interface for Emacs.
 (use-package amx
   :init (amx-mode))
+
+;; Quickly switch windows in Emacs
+(use-package ace-window
+  :bind ("M-o" . 'ace-window))
+
+;; Move to the beginning/end of line, code or comment
+(use-package mwim
+  :bind (("C-a" . 'mwim-beginning)
+	 ("C-e" . 'mwim-end)))
 
 (provide 'init-package)
 ;;; init-package.el ends here
