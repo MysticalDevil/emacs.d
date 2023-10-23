@@ -10,7 +10,7 @@
 ;; Auto save
 ;; `save-some-buffers' is provided by files.el (builtin)
 ;; `pulse-momentary-highlight-one-line' is provided by pulse.el (builtin)
-(use-package pulse-and-save
+(use-package emacs
   :ensure nil
   :init
   (defun pulse-save-buffers (&rest args)

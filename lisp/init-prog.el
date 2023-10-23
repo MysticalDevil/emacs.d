@@ -217,7 +217,7 @@ eg.from datetime import datetime."
   :mode (("\\.http'" . restclient-mode)))
 (use-package yaml-mode)
 
-(use-package quick-run)
+(use-package quickrun)
 
-(provide 'init-ide)
-;;; init-ide.el ends here
+(provide 'init-prog)
+;;; init-prog.el ends here
