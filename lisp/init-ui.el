@@ -3,6 +3,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(toggle-frame-maximized)
+
 ;; Atom one dark theme
 (use-package atom-one-dark-theme
   :init (load-theme 'atom-one-dark t))
@@ -30,10 +32,6 @@
 ;; Attempt at good pixel-based smooth scrolling in Emacs
 (use-package good-scroll
   :init (good-scroll-mode 1))
-
-;; A utility package to collect various Icon Fonts and propertize them within Emacs.
-(use-package all-the-icons
-  :if (display-graphic-p))
 
 ;; A company front-end with icons
 (use-package company-box
@@ -87,12 +85,6 @@
           (set-fontset-font (frame-parameter nil 'font)
                             charset (font-spec :family "Microsoft Yahei Mono" :size 12))))
     (set-face-attribute 'default nil :font "MesloLGS Nerd Font")))
-
-;; Line Number
-;; this package introduced in Emacs 26, so only enabled when 26+
-(use-package display-line-numbers
-  :if (> emacs-major-version 26)
-  :hook (prog-mode . display-line-numbers-mode))
 
 (provide 'init-ui)
 ;;; init-ui.el ends here

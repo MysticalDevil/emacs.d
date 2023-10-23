@@ -17,6 +17,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(require 'cl-lib)
+
 ;; Integration straight.el with package.el
 (setq straight-enable-package-integration t)
 
@@ -48,6 +50,14 @@
       use-package-always-demand nil
       use-package-expand-minimally t
       use-package-verbose t)
+
+(use-package gnu-elpa-keyring-update)
+(use-package diminish)
+(use-package delight)
+
+;; Future-proof your Emacs Lisp customizations!
+(use-package el-patch)
+
 
 (provide 'init-elpa)
 ;;; init-elpa.el ends here

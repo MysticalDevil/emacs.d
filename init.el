@@ -39,12 +39,11 @@
 (require 'init-utils)
 (require 'init-site-lisp)               ; Must come before elpa, as ite may provide package.el
 ;; Calls (package-initialize)
+(require 'init-system)
 (require 'init-elpa)
-
 (require 'init-package)
-(require 'init-kbd)
-(require 'init-ide)
-
+(require 'init-builtin)
+(require 'init-prog)
 (require 'init-ui)
 
 ;; Allow access foe emacs client

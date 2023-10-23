@@ -1,13 +1,28 @@
-;;; init-package.el -- settings for packages
+;;; init-package.el --- initialize the plugins -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;; Code:
 
+;; A utility package to collect various Icon Fonts and propertize them within Emacs.
+;; please install the non-free font Symbola. This issue usually occurs on Windows.
+;; [Refs] https://github.com/seagle0128/doom-modeline
+(use-package all-the-icons
+  :when (display-graphic-p))
+
+;; Auto update packages
+;; this maybe useful, if you want to update all the packages with command, just like me
+(use-package auto-package-update
+  :init (setq auto-package-update-delete-old-versions t
+	      auto-package-update-hide-results t))
+
+;; Make Emacs use the $PATH set up by the user's shell
+(use-package exec-path-from-shell
+  :defer nil
+  :if (memq window-system '(mac ns x))
+  :init (exec-path-from-shell-initialize))
+
 ;; Restart emacs from within emacs
 (use-package restart-emacs)
-
-;; Future-proof your Emacs Lisp customizations!
-(use-package el-patch)
 
 ;; Benchmarks for require and load calls
 (use-package benchmark-init
@@ -30,10 +45,6 @@
     (setq treesit-auto-install 'prompt)
     (global-treesit-auto-mode)))
 
-;; Use y_n to replace yes_no
-(use-package emacs
-  :config (defalias 'yes-or-no-p 'y-or-n-p))
-
 ;; A Collection of Ridiculously Useful eXtensions for Emacs
 (use-package crux
   :bind (("C-c k" . crux-smart-kill-line)
@@ -46,10 +57,9 @@
   :bind (("C-c DEL" . hungry-delete-backward)
 	 ("C-c d" . hungry-delete-forward)))
 
-;; Drag stuff around in Emacs
-(use-package drag-stuff
-  :bind (("<M-up>" . drag-stuff-up)
-	 ("<M-down>" . drag-stuff-down)))
+;; move current line or region up or down
+(use-package move-text
+  :hook (after-init . move-text-default-bindings))
 
 ;; Ivy - a generic completion frontend for Emacs, Swiper - isearch with an overview, and more. Oh, man!
 (use-package ivy
@@ -78,18 +88,6 @@
   :config (setq swiper-action-recenter t
 		swiper-include-line-number-in-search t))
 
-;; ivy-posframe is a ivy extension, which let ivy use posframe to show its candidate menu
-(use-package ivy-posframe
-  :init
-  (setq ivy-posframe-display-functions-alist
-	'((swiper . ivy-posframe-display-at-frame-center)
-	  (complete-symbol . ivy-posframe-display-at-point)
-	  (counse-M-x . ivy-posframe-display-at-frame-center)
-	  (counsel-find-file . ivy-posframe-display-at-frame-center)
-	  (ivy-switch-buffer . ivy-posframe-display-at-frame-center)
-	  (t . ivy-posframe-display-at-frame-center)))
-  (ivy-posframe-mode 1))
-
 ;; Enhanced the undo operate
 (use-package undo-tree
   :init (global-undo-tree-mode)
@@ -112,12 +110,6 @@
 (use-package mwim
   :bind (("C-a" . 'mwim-beginning)
 	 ("C-e" . 'mwim-end)))
-
-;; Auto update packages
-;; this maybe useful, if you want to update all the packages with command, just like me
-(use-package auto-package-update
-  :init (setq auto-package-update-delete-old-versions t
-	      auto-package-update-hide-results t))
 
 ;; format all, formatter for almost languages
 ;; great for programmers

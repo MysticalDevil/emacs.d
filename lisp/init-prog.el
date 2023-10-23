@@ -1,43 +1,25 @@
-;;; init-ide.el -- IDE about settings
+;;; init-ide.el --- Programming mode about settings -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;; Code:
 
-(use-package lsp-mode
-  ;; add prog=mode to lsp insted of adding one by one
-  ;; :hook (prog-mode . (lsp-deferred))
-  :hook (lsp-mode . lsp-enable-which-key-integration)
-  :commands (lsp lsp-deferred lsp-format-buffer lsp-organize-imports)
-  :init
-  (add-hook 'lsp-mode-hook (lambda ()
-			     (add-hook 'before-save-hook #'lsp-organize-imports t t)
-			     (add-hook 'before-save-hook #'lsp-format-buffer t t)))
-  (add-hook 'prog-mode (lambda ()
-			 (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode)(lsp-deferred))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; settings for LSP MODE ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package eglot
+  :hook ((c-mode c++-mode go-mode js2-mode python-mode rust-mode web-mode) . eglot-ensure)
+  :bind (("C-c e f" . #'eglot-format)
+         ("C-c e i" . #'eglot-code-action-organize-imports)
+         ("C-c e q" . #'eglot-code-action-quick-fix))
   :config
-  (setq lsp-auto-guess-root t
-	lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-keymap-prefix "C-c l")
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
-
-(use-package lsp-ui
-  :after lsp-mode
-  :commands lsp-ui-mode
-  :init
-  (setq lsp-ui-doc-include-signature t
-	lsp-ui-doc-position 'at-point
-	lsp-ui-sideline-ignore-duplicate t)
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (add-hook 'lsp-ui-mode-hook 'lsp-modeline-code-actions-mode)
-  :config
-  (define-key lsp-ui-mode-map [remap xref-find-definations] #'lsp-ui-peek-find-definations)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
-
-(use-package lsp-treemacs
-  :commands lsp-treemacs-errors-list)
-
-(use-package lsp-ivy
-  :commands lsp-ivy-workspace-symbol)
+  ;; (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
+  (defun eglot-actions-before-save ()
+    (add-hook 'before-save-hook (lambda ()
+                                  (call-interactively #'eglot-format)
+                                  (call-interactively #'eglot-code-action-organize-imports))))
+  (add-to-list 'eglot-server-programs '(web-mode "vls"))
+  (add-hook 'eglot--managed-mode-hook #'eglot-actions-before-save))
 
 ;; Modular in-buffer completion framework for Emacs
 (use-package company
@@ -50,7 +32,7 @@
 	company-dabbrev-other-buffers 'all
 	company-require-match nil
 	company-minimum-prefix-length 2
-	company-show-numbers t
+	company-show-quick-access t
 	company-tooltip-limit 20
 	company-idle-delay 0
 	company-echo-dely 0
@@ -145,6 +127,56 @@
 (use-package lispy
   :init (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
 
+;; Python
+(use-package python
+  :defer t
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python3" . python-mode)
+  :config
+  ;; for debug
+  (require 'dap-python))
+
+(use-package pyvenv
+  :config
+  (setq python-shell-interpreter "python3")
+  (pyvenv-mode t))
+
+(defmacro check-run-execute (exec-file &rest body)
+  "Find the EXEC-FILE and run the BODY."
+
+  `(if (not (executable-find ,exec-file))
+       (message "[ERROR]: <%s> not found!" ,exec-file)
+     ,@body))
+
+;;;###autoload
+(defun python-isort ()
+  "Sort the imports with isort."
+  (interactive)
+  (check-run-execute "isort"
+		     (shell-command-on-region
+		      (point-min) (point-max)
+		      "isort --atomic --profile=black -"
+		      (current-buffer) t)))
+
+;;;###autoload
+(defun python-remove-all-unused-imports ()
+  "Remove all the unused imports, do NOT use pyimport, as it has bugs.
+eg.from datetime import datetime."
+  (interactive)
+  (check-run-execute "autoflake"
+		     (shell-command
+		      (format "autoflake -i --remove-all-unused-imports %s" (buffer-file-name)))
+		     (revert-buffer t t t)))
+
+(add-hook 'python-mode-hook
+	  (lambda ()
+	    (add-hook 'before-save-hook #'python-isort nil t)
+	    (define-key python-mode-map (kbd "C-c p s") 'python-isort)
+	    (define-key python-mode-map (kbd "C-c p r") 'python-remove-all-unused-imports)))
+
+;; Go
+(use-package go-mode)
+
 ;; Rust
 (use-package rust-mode
   :functions dap-register-debug-template
@@ -167,20 +199,25 @@
   :hook
   (rust-mode . cargo-minor-mode))
 
-;; Python
-(use-package python
-  :defer t
-  :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python3" . python-mode)
-  :config
-  ;; for debug
-  (require 'dap-python))
+;; Web developmenter
+(use-package web-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+  :config (setq web-mode-enable-current-element-highlight t))
 
-(use-package pyvenv
-  :config
-  (setq python-shell-interpreter "python3")
-  (pyvenv-mode t))
+;; Use C-j to expand emmet
+(use-package emmet-mode
+  :hook ((web-mode . emmet-mode)
+         (css-mode . emmet-mode)))
 
+(use-package json-mode)
+(use-package markdown-mode)
+(use-package restclient
+  :mode (("\\.http'" . restclient-mode)))
+(use-package yaml-mode)
+
+(use-package quick-run)
 
 (provide 'init-ide)
 ;;; init-ide.el ends here
