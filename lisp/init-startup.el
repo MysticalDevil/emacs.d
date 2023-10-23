@@ -25,11 +25,6 @@
 ;; Remember and restore the last cursor location of opened files
 (save-place-mode 1)
 
-;; Move customization variables to a separate file and load it
-(setq custom-file (locate-user-emacs-file "custom-vars.el"))
-(when (file-exists-p custom-file)
-  (load custom-file 'noerror 'nomessage))
-
 ;; Don't pop up UI dialogs when prompting
 (setq use-dialog-box nil)
 
