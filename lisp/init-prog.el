@@ -23,23 +23,39 @@
 
 ;; Modular in-buffer completion framework for Emacs
 (use-package company
+  :custom
+  (company-dabbrev-code-everywhere t)
+  (company-dabbrev-code-modes t)
+  (company-dabbrev-code-other-buffers 'all)
+  (company-dabbrev-downcase nil)
+  (company-dabbrev-ignore-case t)
+  (company-dabbrev-other-buffers 'all)
+  (company-require-match nil)
+  (company-minimum-prefix-length 2)
+  (company-show-quick-access t)
+  (company-tooltip-limit 20)
+  (company-tooltip-align-annotations t)
+  (company-idle-delay 0)
+  (company-echo-dely 0)
+  (company-tooltip-offset-display 'scrollbar)
+  (company-begin-commands '(self-insert-command))
+  (company-tempo-expand t)
+  (company-backends '(company-capf company-files company-dabbrev))
   :config
-  (setq company-dabbrev-code-everywhere t
-	company-dabbrev-code-modes t
-	company-dabbrev-code-other-buffers 'all
-	company-dabbrev-downcase nil
-	company-dabbrev-ignore-case t
-	company-dabbrev-other-buffers 'all
-	company-require-match nil
-	company-minimum-prefix-length 2
-	company-show-quick-access t
-	company-tooltip-limit 20
-	company-idle-delay 0
-	company-echo-dely 0
-	company-tooltip-offset-display 'scrollbar
-	company-begin-commands '(self-insert-command))
   (push '(company-semantic :with company-yasnippet) company-backends)
-  :hook ((after-init . global-company-mode)))
+  :hook (prog-mode . company-mode))
+
+;; A company front-end with icons
+(use-package orderless
+  :init
+  (setq completion-styles '(basic substring partial-completion flex)
+        completion-category-defaults nil)
+  :config
+  (orderless-define-completion-style orderless+initialism
+                                     (order-matching-styles '(orderless-initialism orderless-literal orderless-regexp)))
+  (setq completion-category-overrides '((command (styles orderless+initialism))
+                                        (symbol (styles orderless+initialism))
+                                        (variable (styles orderless+initialism)))))
 
 ;; A template system for Emacs
 (use-package yasnippet
@@ -49,10 +65,10 @@
   (yas-reload-all)
   ;; add company-yasnippet to company-backends
   (defun company-mode/backend-with-yas (backend)
-    (if (and (listp backend) (member 'company-yasnippet backend))
-	backend
-      (append (if (consp backend) backend (list backend))
-	      '(:with company-yasnippet))))
+    (if (and (listp backend) (member 'company-yasnippet backend)
+             backend)
+        (append (if (consp backend) backend (list backend))
+                '(:with company-yasnippet))))
   (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
   ;; unbind <TAB> completion
   (define-key yas-minor-mode-map [(tab)]        nil)
@@ -63,11 +79,6 @@
 
 (use-package yasnippet-snippets
   :after yasnippet)
-
-;; On-the-fly syntax checking
-(use-package flycheck
-  :config (setq truncate-lines nil)
-  :hook (prog-mode . flycheck-mode))
 
 ;; Project Interaction Library for Emacs
 (use-package projectile
@@ -81,26 +92,6 @@
   :ensure t
   :after (projectile)
   :init (counsel-projectile-mode))
-
-;; A Git Porcelain inside Emacs
-(use-package magit)
-
-;; Treemacs - a tree layout file explorer for Emacs
-(use-package treemacs
-  :ensure t
-  :defer t
-  :config
-  (treemacs-tag-follow-mode)
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ;; ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag))
-  (:map treemacs-mode-map
-	("/" . treemacs-advanced-helpful-hydra)))
 
 (use-package treemacs-projectile
   :ensure t
@@ -153,10 +144,10 @@
   "Sort the imports with isort."
   (interactive)
   (check-run-execute "isort"
-		     (shell-command-on-region
-		      (point-min) (point-max)
-		      "isort --atomic --profile=black -"
-		      (current-buffer) t)))
+             (shell-command-on-region
+                  (point-min) (point-max)
+                  "isort --atomic --profile=black -"
+                  (current-buffer) t)))
 
 ;;;###autoload
 (defun python-remove-all-unused-imports ()
@@ -164,15 +155,15 @@
 eg.from datetime import datetime."
   (interactive)
   (check-run-execute "autoflake"
-		     (shell-command
-		      (format "autoflake -i --remove-all-unused-imports %s" (buffer-file-name)))
-		     (revert-buffer t t t)))
+             (shell-command
+                  (format "autoflake -i --remove-all-unused-imports %s" (buffer-file-name)))
+             (revert-buffer t t t)))
 
 (add-hook 'python-mode-hook
-	  (lambda ()
-	    (add-hook 'before-save-hook #'python-isort nil t)
-	    (define-key python-mode-map (kbd "C-c p s") 'python-isort)
-	    (define-key python-mode-map (kbd "C-c p r") 'python-remove-all-unused-imports)))
+      (lambda ()
+          (add-hook 'before-save-hook #'python-isort nil t)
+          (define-key python-mode-map (kbd "C-c p s") 'python-isort)
+          (define-key python-mode-map (kbd "C-c p r") 'python-remove-all-unused-imports)))
 
 ;; Go
 (use-package go-mode)
@@ -189,11 +180,11 @@ eg.from datetime import datetime."
   (require 'dap-gdb-lldb)
   (dap-register-debug-template "Rust::LLDB Run Configuration"
                                (list :type "lldb"
-				     :request "launch"
-			             :name "rust-lldb::Run"
-				     :gdbpath "rust-lldb"
-				     :target nil
-				     :cwd nil)))
+                                :request "launch"
+                                :name "rust-lldb::Run"
+                                :gdbpath "rust-lldb"
+                                :target nil
+                                :cwd nil)))
 
 (use-package cargo
   :hook

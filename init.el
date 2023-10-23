@@ -17,7 +17,6 @@
 
 ;; Load the `lisp` directory
 (add-to-list 'load-path (expand-file-name (concat user-emacs-directory "lisp")))
-(require 'init-benchmarking)
 
 (defconst *spell-check-support-enabled* nil) ; Enable with t if you prefer
 (defconst *is-mac* (eq system-type 'darwin))
@@ -26,25 +25,18 @@
 
 (defconst *ts-avaiable* (>= emacs-major-version 29))
 
-
-;; Adjust garbage collection thresholds during startup, and thereafter
-(let ((normal-gc-cons-threshold (* 20 1024 1024))
-      (init-gc-cons-threshold (* 128 1024 1024)))
-  (setq gc-cons-threshold init-gc-cons-threshold)
-  (add-hook 'emacs-startup-hook
-            (lambda () (setq gc-cons-threshold normal-gc-cons-threshold))))
-
 ;; Bootstrap config
 (setq custom-file (locate-user-emacs-file "custom.el"))
-(require 'init-utils)
 (require 'init-site-lisp)               ; Must come before elpa, as ite may provide package.el
-;; Calls (package-initialize)
 (require 'init-system)
 (require 'init-elpa)
 (require 'init-package)
 (require 'init-builtin)
 (require 'init-prog)
+(require 'init-evil)
 (require 'init-ui)
+
+(load-theme 'doom-one t)
 
 ;; Allow access foe emacs client
 (add-hook 'after-init-hook

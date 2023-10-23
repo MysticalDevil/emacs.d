@@ -13,7 +13,7 @@
 ;; this maybe useful, if you want to update all the packages with command, just like me
 (use-package auto-package-update
   :init (setq auto-package-update-delete-old-versions t
-	      auto-package-update-hide-results t))
+	          auto-package-update-hide-results t))
 
 ;; Make Emacs use the $PATH set up by the user's shell
 (use-package exec-path-from-shell
@@ -48,14 +48,14 @@
 ;; A Collection of Ridiculously Useful eXtensions for Emacs
 (use-package crux
   :bind (("C-c k" . crux-smart-kill-line)
-	 ("C-a" . crux-move-beginning-of-line)
-	 ("C-c ^" . crux-top-join-line)
-	 ("C-x ," . crux-find-user-init-file)))
+	     ("C-a" . crux-move-beginning-of-line)
+	     ("C-c ^" . crux-top-join-line)
+	     ("C-x ," . crux-find-user-init-file)))
 
 ;; Enables hungry deletion in all modes.
 (use-package hungry-delete
   :bind (("C-c DEL" . hungry-delete-backward)
-	 ("C-c d" . hungry-delete-forward)))
+	     ("C-c d" . hungry-delete-forward)))
 
 ;; move current line or region up or down
 (use-package move-text
@@ -69,24 +69,120 @@
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t
-	ivy-initial-inputs-alist nil
-	ivy-count-format "[%d/%d]"
-	enable-recursive-minibuffers t
-	ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
+	    ivy-initial-inputs-alist nil
+	    ivy-count-format "[%d/%d]"
+	    enable-recursive-minibuffers t
+	    ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
 
 (use-package counsel
   :after (ivy)
   :bind (("M-x" . counsel-M-x)
-	 ("C-x C-f" . counsel-find-file)
-	 ("C-c r" . counsel-recentf)
-	 ("C-c g" . counsel-git)))
+	     ("C-x C-f" . counsel-find-file)
+	     ("C-c r" . counsel-recentf)
+	     ("C-c g" . counsel-git)))
 
 (use-package swiper
   :after ivy
   :bind (("C-s" . swiper)
-	 ("C-r" . swiper-isearch-forward))
+	     ("C-r" . swiper-isearch))
   :config (setq swiper-action-recenter t
-		swiper-include-line-number-in-search t))
+		        swiper-include-line-number-in-search t))
+
+(use-package ivy-rich
+  :hook (ivy-mode . ivy-rich-mode)
+  :config
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
+
+;; vertico.el - VERTical Interactive COmpletion
+(use-package vertico
+  :init (vertico-mode)
+  ;; Different scroll margin
+  ;; (setq vertico-scroll-margin 0)
+
+  ;; Show more candidates
+  ;; (setq vertico-count 20)
+
+  ;; Grow and shrink the Vertico minibuffer
+  ;; (setq vertico-resize t)
+
+  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+  ;; (setq vertico-cycle t)
+  )
+
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
+  (defun crm-indicator (args)
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
+
+;; marginalia.el - Marginalia in the minibuffer
+(use-package marginalia
+  ;; Bind `marginalia-cycle' locally in the minibuffer.  To make the binding
+  ;; available in the *Completions* buffer, add it to the
+  ;; `completion-list-mode-map'.
+  :bind (:map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+
+  ;; The :init section is always executed.
+  :init
+
+  ;; Marginalia must be activated in the :init section of use-package such that
+  ;; the mode gets enabled right away. Note that this forces loading the
+  ;; package.
+  (marginalia-mode))
+
+;; Treemacs - a tree layout file explorer for Emacs
+(use-package treemacs
+  :ensure t
+  :defer t
+  :config
+  (treemacs-git-mode 'deferred)
+  (treemacs-filewatch-mode)
+  (treemacs-load-theme "all-the-icons")
+  :bind
+  (:map global-map
+        ("C-c o p"   . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ;; ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag))
+  (:map treemacs-mode-map
+	    ("/" . treemacs-advanced-helpful-hydra)))
+
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :ensure t
+  :config (treemacs-icons-dired-mode))
+
+;; A Git Porcelain inside Emacs
+(use-package magit)
 
 ;; Enhanced the undo operate
 (use-package undo-tree
@@ -109,7 +205,7 @@
 ;; Move to the beginning/end of line, code or comment
 (use-package mwim
   :bind (("C-a" . 'mwim-beginning)
-	 ("C-e" . 'mwim-end)))
+	     ("C-e" . 'mwim-end)))
 
 ;; format all, formatter for almost languages
 ;; great for programmers

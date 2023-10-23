@@ -88,5 +88,9 @@
   (diminish elem))
 (add-hook 'hs-minor-mode-hook (lambda () (diminish 'hs-minor-mode)))
 
+;; Prettify symbols mode
+(use-package emacs
+  :hook (prog-mode . prettify-symbols-mode))
+
 (provide 'init-builtin)
-;; init-builtin.el ends here
+;;; init-builtin.el ends here
