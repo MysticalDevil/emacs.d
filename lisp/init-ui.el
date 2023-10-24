@@ -23,8 +23,8 @@
   :init
   (setq doom-modeline-support-imenu t)
   :custom-face
-  (doom-modeline ((t (:family "MesloLGS Nerd Font" :height 100))))
-  (doom-modeline-inactive ((t (:family "MesloLGS Nerd Font" :height 100))))
+  (doom-modeline ((t (:family "MesloLGS Nerd Font" :height 120))))
+  (doom-modeline-inactive ((t (:family "MesloLGS Nerd Font" :height 120))))
   (doom-modeline-battery-full ((t (:inherit success :weight extra-bold))))
   :config
   (setq inhibit-compacting-font-caches t
@@ -99,14 +99,14 @@
   :custom
   (dashboard-projects-backend 'projectile)
   (dashboard-banner-logo-title "This is a devil")
-  (dashboard-startup-banner "~/.config/emacs/img/logo.svg")
   (dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
   (dashboard-set-init-info t)
   (dashboard-set-navigator t)
   (dashboard-items '((recents . 5)
                      (projects . 5)
-                     (bookmarks . 5))))
+                     (bookmarks . 5)))
+  (dashboard-icon-type 'all-the-icons))
 
 
 

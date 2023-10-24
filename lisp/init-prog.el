@@ -82,32 +82,17 @@
 
 ;; Project Interaction Library for Emacs
 (use-package projectile
-  :ensure t
   :bind (("C-c p" . projectile-command-map))
   :config
   (setq projectile-mode-line "Projectile")
   (setq projectile-track-known-projects-automatically nil))
 
 (use-package counsel-projectile
-  :ensure t
   :after (projectile)
   :init (counsel-projectile-mode))
 
 (use-package treemacs-projectile
-  :ensure t
   :after (treemacs projectile))
-
-;; If you like debugging in Emacs, enable the next lines.
-;; I disabled it, as it imports too many dependencies.Such as:
-;; posframe,lsp-treemacs(dash, treemacs[hydra(cl-lib), ace-window(avy)])
-;; (use-package dap-mode
-;;   :init
-;;   (add-hook 'lsp-mode-hook 'dap-mode)
-;;   (add-hook 'dap-mode-hook 'dap-ui-mode)
-;;   (add-hook 'dap-mode-hook 'dap-tooltip-mode)
-;;   (add-hook 'python-mode-hook (lambda() (require 'dap-python)))
-;;   (add-hook 'go-mode-hook (lambda() (require 'dap-go)))
-;;   (add-hook 'java-mode-hook (lambda() (require 'dap-java))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; settings for Program Languages ;;

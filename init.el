@@ -37,6 +37,7 @@
 (require 'init-ui)
 
 (load-theme 'doom-one t)
+(evil-mode 1)
 
 ;; Allow access foe emacs client
 (add-hook 'after-init-hook

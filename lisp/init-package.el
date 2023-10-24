@@ -165,6 +165,8 @@
   (treemacs-git-mode 'deferred)
   (treemacs-filewatch-mode)
   (treemacs-load-theme "all-the-icons")
+  (with-eval-after-load 'treemacs
+    (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
   :bind
   (:map global-map
         ("C-c o p"   . treemacs-select-window)
@@ -176,10 +178,17 @@
   (:map treemacs-mode-map
 	    ("/" . treemacs-advanced-helpful-hydra)))
 
+(use-package treemacs-all-the-icons
+  :after (treemacs)
+  :config (treemacs-all-the-icons-mode))
+
 (use-package treemacs-icons-dired
-  :after treemacs dired
-  :ensure t
+  :after (treemacs dired)
   :config (treemacs-icons-dired-mode))
+
+(use-package treemacs-magit
+  :after (treemacs magit)
+  :config (treemacs-magit-mode))
 
 ;; A Git Porcelain inside Emacs
 (use-package magit)

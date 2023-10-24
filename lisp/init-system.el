@@ -44,7 +44,8 @@
 (unless (memq system-type '(cygwin windows-nt ms-dos))
   (setq selection-coding-system 'utf-8))
 
-(provide 'init-system)
+;; Set font size
+(set-frame-font "MesloLGS Nerd Font 12" nil t)
 
 (provide 'init-system)
 ;; init-system.el ends here
