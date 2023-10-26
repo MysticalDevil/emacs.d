@@ -1,6 +1,6 @@
 ;;; init-builtin.el --- initialize the builtin plugins -*- lexical-binding: t -*-
-;;; Commentary
-;;; Code
+;;; Commentary:
+;;; Code:
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -33,14 +33,6 @@
 ;; Delete behavior
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
 (add-hook 'after-init-hook 'delete-selection-mode)
-
-;; Electric-Pair
-(add-hook 'after-init-hook 'electric-indent-mode)
-(add-hook 'prog-mode-hook 'electric-pair-mode)
-(add-hook 'prog-mode-hook 'electric-layout-mode)
-
-;; Flymake
-(add-hook 'prog-mode-hook 'flymake-mode)
 
 ;; HideShow minor mode
 (use-package hideshow

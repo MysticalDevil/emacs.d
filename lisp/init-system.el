@@ -29,16 +29,6 @@
 ;; =====================OS Specific==================== ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; macOS
-;; move file to trash when delete
-(when (eq system-type 'darwin)
-  (setq delete-by-moving-to-trash t))
-
-;; <macOS> Command -> Meta, Option -> Super
-(when (eq system-type 'darwin)
-  (setq mac-command-modifier 'meta
-	mac-option-modifier 'super))
-
 ;;; Windows
 ;; spcial coding settings for Windows
 (unless (memq system-type '(cygwin windows-nt ms-dos))
@@ -48,4 +38,4 @@
 (set-frame-font "MesloLGS Nerd Font 12" nil t)
 
 (provide 'init-system)
-;; init-system.el ends here
+;;; init-system.el ends here

@@ -1,6 +1,7 @@
 custom-vars.el
 amx-items
 flycheck_.*
+/parinfer-rust
 /straight
 /url/cache
 /.emacs.desktop

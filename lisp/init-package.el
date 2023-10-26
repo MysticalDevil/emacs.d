@@ -9,11 +9,15 @@
 (use-package all-the-icons
   :when (display-graphic-p))
 
+;; Nerd-icons.el is a library for easily using Nerd Font icons inside Emacs, an alternative to all-the-icons.
+(use-package nerd-icons
+  :when (display-graphic-p))
+
 ;; Auto update packages
 ;; this maybe useful, if you want to update all the packages with command, just like me
 (use-package auto-package-update
   :init (setq auto-package-update-delete-old-versions t
-	          auto-package-update-hide-results t))
+              auto-package-update-hide-results t))
 
 ;; Make Emacs use the $PATH set up by the user's shell
 (use-package exec-path-from-shell
@@ -47,15 +51,15 @@
 
 ;; A Collection of Ridiculously Useful eXtensions for Emacs
 (use-package crux
-  :bind (("C-c k" . crux-smart-kill-line)
-	     ("C-a" . crux-move-beginning-of-line)
-	     ("C-c ^" . crux-top-join-line)
-	     ("C-x ," . crux-find-user-init-file)))
+  :bind (("C-c k" . crux-smart-kill-line))
+  ("C-a" . crux-move-beginning-of-line)
+  ("C-c ^" . crux-top-join-line)
+  ("C-x ," . crux-find-user-init-file))
 
 ;; Enables hungry deletion in all modes.
 (use-package hungry-delete
-  :bind (("C-c DEL" . hungry-delete-backward)
-	     ("C-c d" . hungry-delete-forward)))
+  :bind (("C-c DEL" . hungry-delete-backward))
+  ("C-c d" . hungry-delete-forward))
 
 ;; move current line or region up or down
 (use-package move-text
@@ -69,45 +73,29 @@
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t
-	    ivy-initial-inputs-alist nil
-	    ivy-count-format "[%d/%d]"
-	    enable-recursive-minibuffers t
-	    ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
+        ivy-initial-inputs-alist nil
+        ivy-count-format "[%d/%d]"
+        enable-recursive-minibuffers t
+        ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
 
 (use-package counsel
   :after (ivy)
-  :bind (("M-x" . counsel-M-x)
-	     ("C-x C-f" . counsel-find-file)
-	     ("C-c r" . counsel-recentf)
-	     ("C-c g" . counsel-git)))
+  :bind (("M-x" . counsel-M-x))
+  ("C-x C-f" . counsel-find-file)
+  ("C-c r" . counsel-recentf)
+  ("C-c g" . counsel-git))
 
 (use-package swiper
   :after ivy
-  :bind (("C-s" . swiper)
-	     ("C-r" . swiper-isearch))
+  :bind (("C-s" . swiper))
+  ("C-r" . swiper-isearch)
   :config (setq swiper-action-recenter t
-		        swiper-include-line-number-in-search t))
+                swiper-include-line-number-in-search t))
 
 (use-package ivy-rich
   :hook (ivy-mode . ivy-rich-mode)
   :config
   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
-
-;; vertico.el - VERTical Interactive COmpletion
-(use-package vertico
-  :init (vertico-mode)
-  ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
-
-  ;; Show more candidates
-  ;; (setq vertico-count 20)
-
-  ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
-  )
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
@@ -147,7 +135,7 @@
   ;; available in the *Completions* buffer, add it to the
   ;; `completion-list-mode-map'.
   :bind (:map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
+              ("M-A" . marginalia-cycle))
 
   ;; The :init section is always executed.
   :init
@@ -159,14 +147,14 @@
 
 ;; Treemacs - a tree layout file explorer for Emacs
 (use-package treemacs
-  :ensure t
   :defer t
+  :commands (treemacs-follow-mode
+             treemacs-git-mode
+             treemacs-filewatch-mode)
   :config
   (treemacs-git-mode 'deferred)
   (treemacs-filewatch-mode)
   (treemacs-load-theme "all-the-icons")
-  (with-eval-after-load 'treemacs
-    (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
   :bind
   (:map global-map
         ("C-c o p"   . treemacs-select-window)
@@ -176,7 +164,14 @@
         ;; ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag))
   (:map treemacs-mode-map
-	    ("/" . treemacs-advanced-helpful-hydra)))
+        ("/" . treemacs-advanced-helpful-hydra)
+        ([mouse-1] . treemacs-single-click-expand-action))
+  :config
+  (setq treemacs-missing-project-action 'remove
+        treemacs-follow-after-init t)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
+
 
 (use-package treemacs-all-the-icons
   :after (treemacs)
@@ -189,6 +184,10 @@
 (use-package treemacs-magit
   :after (treemacs magit)
   :config (treemacs-magit-mode))
+
+(use-package treemacs-tab-bar
+  :demand t
+  :config (treemacs-set-scope-type 'Tabs))
 
 ;; A Git Porcelain inside Emacs
 (use-package magit)
@@ -213,8 +212,8 @@
 
 ;; Move to the beginning/end of line, code or comment
 (use-package mwim
-  :bind (("C-a" . 'mwim-beginning)
-	     ("C-e" . 'mwim-end)))
+  :bind (("C-a" . 'mwim-beginning))
+  ("C-e" . 'mwim-end))
 
 ;; format all, formatter for almost languages
 ;; great for programmers

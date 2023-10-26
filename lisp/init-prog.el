@@ -11,7 +11,7 @@
   :hook ((c-mode c++-mode go-mode js2-mode python-mode rust-mode web-mode) . eglot-ensure)
   :bind (("C-c e f" . #'eglot-format)
          ("C-c e i" . #'eglot-code-action-organize-imports)
-         ("C-c e q" . #'eglot-code-action-quick-fix))
+         ("C-c e q" . #'eglot-code-action-qucik-fix))
   :config
   ;; (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
   (defun eglot-actions-before-save ()
@@ -94,6 +94,13 @@
 (use-package treemacs-projectile
   :after (treemacs projectile))
 
+;; Flycheck
+(use-package flycheck
+  :hook (prog-mode . flycheck-mode))
+
+(use-package flycheck-color-mode-line
+  :after (flycheck))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; settings for Program Languages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -102,6 +109,9 @@
 ;; Short and sweet LISP editing
 (use-package lispy
   :init (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1))))
+(use-package parinfer-rust-mode
+  :hook emacs-lisp-mode
+  :init (setq parinfer-rust--ask-to-download t))
 
 ;; Python
 (use-package python
@@ -129,10 +139,10 @@
   "Sort the imports with isort."
   (interactive)
   (check-run-execute "isort"
-             (shell-command-on-region
-                  (point-min) (point-max)
-                  "isort --atomic --profile=black -"
-                  (current-buffer) t)))
+                     (shell-command-on-region
+                      (point-min) (point-max)
+                      "isort --atomic --profile=black -"
+                      (current-buffer) t)))
 
 ;;;###autoload
 (defun python-remove-all-unused-imports ()
@@ -140,15 +150,15 @@
 eg.from datetime import datetime."
   (interactive)
   (check-run-execute "autoflake"
-             (shell-command
-                  (format "autoflake -i --remove-all-unused-imports %s" (buffer-file-name)))
-             (revert-buffer t t t)))
+                     (shell-command
+                      (format "autoflake -i --remove-all-unused-imports %s" (buffer-file-name)))
+                     (revert-buffer t t t)))
 
 (add-hook 'python-mode-hook
-      (lambda ()
-          (add-hook 'before-save-hook #'python-isort nil t)
-          (define-key python-mode-map (kbd "C-c p s") 'python-isort)
-          (define-key python-mode-map (kbd "C-c p r") 'python-remove-all-unused-imports)))
+          (lambda ()
+            (add-hook 'before-save-hook #'python-isort nil t)
+            (define-key python-mode-map (kbd "C-c p s") 'python-isort)
+            (define-key python-mode-map (kbd "C-c p r") 'python-remove-all-unused-imports)))
 
 ;; Go
 (use-package go-mode)
@@ -165,11 +175,11 @@ eg.from datetime import datetime."
   (require 'dap-gdb-lldb)
   (dap-register-debug-template "Rust::LLDB Run Configuration"
                                (list :type "lldb"
-                                :request "launch"
-                                :name "rust-lldb::Run"
-                                :gdbpath "rust-lldb"
-                                :target nil
-                                :cwd nil)))
+                                     :request "launch"
+                                     :name "rust-lldb::Run"
+                                     :gdbpath "rust-lldb"
+                                     :target nil
+                                     :cwd nil)))
 
 (use-package cargo
   :hook

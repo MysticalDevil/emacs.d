@@ -86,26 +86,51 @@
 
 ;; An extensible emacs dashboard
 (use-package dashboard
+  :diminish dashboard-mode
   :init
   ;; Format: "(icon title help action face prefix suffix)"
-  (setq dashboard-navigator-buttons `(((,(if (fboundp 'all-the-icons-octicon) (all-the-icons-octicon "mark-github" :height 1.0 :v-adjust 0.0) "★")
-                                        "GitHub" "Browse" (lambda (&rest _) (browse-url homepage-url))))))
+  (setq dashboard-navigator-buttons
+        `(((,(when (icons-displayable-p)
+               (nerd-icons-mdicon "nf-md-github" :height 1.4))
+            "Homepage" "Browse homepage"
+            (lambda (&rest _) (browse-url homepage-url)))
+           (,(when (icons-displayable-p)
+               (nerd-icons-mdicon "nf-md-backup_restore" :height 1.5))
+            "Restore" "Restore previous session"
+            (lambda (&rest _) (restore-session)))
+           (,(when (icons-displayable-p)
+               (nerd-icons-mdicon "nf-md-tools" :height 1.3))
+            "Settings" "Open custom file"
+            (lambda (&rest _) (find-file custom-file))))))
 
   :hook ((after-init . dashboard-setup-startup-hook)
          (dashboard-mode . (lambda ()
                              (setq-local global-hl-line-mode nil))))
   :config
   (defconst homepage-url "https://github.com/MysticalDevil/emacs.d")
+  (defun restore-session ()
+    "Restore the previous session."
+    (interactive)
+    (message "Restoring previous session")
+    (quit-window)
+    (desktop-read)
+    (message "Restoring prebious session...donw"))
+
   :custom
-  (dashboard-projects-backend 'projectile)
   (dashboard-banner-logo-title "This is a devil")
+  (dashboard-startup-banner 'logo)
+  (dashboard-projects-backend 'projectile)
+  (dashboard-path-style 'truncate-middle)
+  (dashboard-path-max-length 60)
+  (dashboard-center-content t)
   (dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
   (dashboard-set-init-info t)
   (dashboard-set-navigator t)
   (dashboard-items '((recents . 5)
                      (projects . 5)
-                     (bookmarks . 5)))
+                     (bookmarks . 5)
+                     (agenda . 5)))
   (dashboard-icon-type 'all-the-icons))
 
 
