@@ -23,7 +23,8 @@
       scroll-preserve-screen-position t
       scroll-up-aggressively 0.01
       scroll-down-aggressively 0.01
-      visible-bell nil)
+      visible-bell nil
+      use-file-dialog nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; =====================OS Specific==================== ;;

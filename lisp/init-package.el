@@ -147,15 +147,19 @@
 
 (use-package treemacs-icons-dired
   :after (treemacs dired)
-  :config (treemacs-icons-dired-mode))
+  :hook (dired-mode . treemacs-icons-dired-enable-once))
 
 (use-package treemacs-magit
-  :after (treemacs magit)
-  :config (treemacs-magit-mode))
+  :after (treemacs magit))
 
 (use-package treemacs-tab-bar
   :demand t
   :config (treemacs-set-scope-type 'Tabs))
+
+(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+  :ensure t
+  :config (treemacs-set-scope-type 'Perspectives))
 
 ;; A Git Porcelain inside Emacs
 (use-package magit)

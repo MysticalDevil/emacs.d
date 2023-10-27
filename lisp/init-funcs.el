@@ -1,4 +1,4 @@
-;;; init-funs.el --- Define functions.	-*- lexical-binding: t -*-
+;;; init-funcs.el --- Define functions.	-*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -7,5 +7,5 @@
   (or (featurep 'nerd-icons)
       (require 'nerd-icons nil t)))
 
-(provide 'init-funs)
-;;; init-funs.el ends here
+(provide 'init-funcs)
+;;; init-funcs.el ends here

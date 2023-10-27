@@ -29,7 +29,7 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (require 'init-site-lisp)               ; Must come before elpa, as ite may provide package.el
 (require 'init-system)
-(require 'init-funs)
+(require 'init-funcs)
 (require 'init-elpa)
 (require 'init-package)
 (require 'init-builtin)

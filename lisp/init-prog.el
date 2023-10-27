@@ -37,7 +37,16 @@
 
 ;; Flycheck
 (use-package flycheck
-  :hook (prog-mode . flycheck-mode))
+  :commands (flycheck-mode)
+  :hook (prog-mode . flycheck-mode)
+  :config
+  (setq flycheck-emacs-lisp-initialize-packages 'auto
+        flycheck-emacs-lisp-load-path 'inherit
+        flycheck-global-modes '(not dir-locals-mode
+                                    text-mode
+                                    org-mode
+                                    vterm-mode)
+        flycheck-check-syntax-automatically '(save idle-change mode-enabled)))
 
 (use-package flycheck-color-mode-line
   :after (flycheck))
