@@ -122,28 +122,42 @@
   :config
   (treemacs-git-mode 'deferred)
   (treemacs-filewatch-mode)
-  (treemacs-load-theme "all-the-icons")
   :bind
   (:map global-map
-        ("C-c o p"   . treemacs-select-window)
+        ("M-0"       . treemacs-select-window)
         ("C-x t 1"   . treemacs-delete-other-windows)
         ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ;; ("C-x t C-t" . treemacs-find-file)
+        ("C-x t b"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag))
   (:map treemacs-mode-map
         ("/" . treemacs-advanced-helpful-hydra)
         ([mouse-1] . treemacs-single-click-expand-action))
   :config
   (setq treemacs-missing-project-action 'remove
-        treemacs-follow-after-init t)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t))
+        treemacs-follow-after-init nil
+        treemacs-show-hidden-files t
+        treemacs-expand-after-init t)
+  (treemacs-project-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode 'always)
+  (when treemacs-python-executable
+    (treemacs-git-commit-diff-mode t))
 
+  (pcase (cons (not (null (executable-find "git")))
+               (not (null treemacs-python-executable)))
+    (`(t . t)
+     (treemacs-git-mode 'deferred))
+    (`(t . _)
+     (treemacs-git-mode 'simple))))
 
-(use-package treemacs-all-the-icons
-  :after (treemacs)
-  :config (treemacs-all-the-icons-mode))
+(use-package treemacs-nerd-icons
+    :demand t
+    :when (icons-displayable-p)
+    :custom-face
+    (treemacs-nerd-icons-root-face ((t (:inherit nerd-icons-green :height 1.3))))
+    (treemacs-nerd-icons-file-face ((t (:inherit nerd-icons-dsilver))))
+    :config (treemacs-load-theme "nerd-icons"))
 
 (use-package treemacs-icons-dired
   :after (treemacs dired)
@@ -153,6 +167,7 @@
   :after (treemacs magit))
 
 (use-package treemacs-tab-bar
+  :after (treemacs)
   :demand t
   :config (treemacs-set-scope-type 'Tabs))
 
@@ -160,6 +175,12 @@
   :after (treemacs persp-mode) ;;or perspective vs. persp-mode
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
+
+(use-package treemacs-evil
+  :after (treemacs evil))
+
+(use-package treemacs-projectile
+  :after (treemacs projectile))
 
 ;; A Git Porcelain inside Emacs
 (use-package magit)

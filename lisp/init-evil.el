@@ -3,6 +3,7 @@
 ;;; Code:
 
 (require 'ace-window)
+(require 'treemacs)
 
 (defun treemacs-is-treemacs-window-selected? ()
   "Check if the treemacs window is selected (has focus)."
@@ -34,7 +35,8 @@
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal)
   (evil-set-leader 'normal (kbd "SPC"))
-  (evil-define-key 'normal  'global (kbd "<leader>ts") #'+private/treemacs-back-and-forth))
+  (evil-define-key 'normal 'global (kbd "<leader>ts") #'+private/treemacs-back-and-forth)
+  (evil-define-key 'normal 'global (kbd "<leader>op") #'treemacs))
 
 (use-package evil-surround
   :config
@@ -46,9 +48,6 @@
 
 (use-package evil-nerd-commenter
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
-
-(use-package treemacs-evil
-  :after (treemacs evil))
 
 (provide 'init-evil)
 ;;; init-evil.el ends here

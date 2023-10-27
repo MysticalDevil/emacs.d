@@ -32,9 +32,6 @@
   :after (projectile)
   :init (counsel-projectile-mode))
 
-(use-package treemacs-projectile
-  :after (treemacs projectile))
-
 ;; Flycheck
 (use-package flycheck
   :commands (flycheck-mode)

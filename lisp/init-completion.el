@@ -62,6 +62,14 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
+;; Languages backend
+(use-package company-go
+  :init
+  (add-hook 'go-mode-hook (lambda ()
+                            (set (make-local-variable 'company-backends) '(company-go))
+                            (company-mode)))
+  :after (company))
+
 ;; A company front-end with icons
 (use-package orderless
   :init
