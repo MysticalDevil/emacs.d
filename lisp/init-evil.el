@@ -49,5 +49,9 @@
 (use-package evil-nerd-commenter
   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
+(use-package evil-collection
+  :after (evil)
+  :config (evil-collection-init))
+
 (provide 'init-evil)
 ;;; init-evil.el ends here
