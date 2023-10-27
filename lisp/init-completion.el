@@ -53,7 +53,7 @@
   (company-tooltip-offset-display 'scrollbar)
   (company-begin-commands '(self-insert-command))
   (company-tempo-expand t)
-  (company-backends '(company-capf company-files company-dabbrev))
+  (company-backends '((company-capf company-dabbrev company-ispell :separate) company-files))
   :config
   (push '(company-semantic :with company-yasnippet) company-backends)
   :hook (prog-mode . company-mode))
@@ -62,15 +62,6 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-;; Languages backend
-(use-package company-go
-  :init
-  (add-hook 'go-mode-hook (lambda ()
-                            (set (make-local-variable 'company-backends) '(company-go))
-                            (company-mode)))
-  :after (company))
-
-;; A company front-end with icons
 (use-package orderless
   :init
   (setq completion-styles '(basic substring partial-completion flex)
