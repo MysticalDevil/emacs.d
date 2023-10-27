@@ -139,10 +139,17 @@ eg.from datetime import datetime."
   (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
   :config (setq web-mode-enable-current-element-highlight t))
 
-;; Use C-j to expand emmet
-(use-package emmet-mode
-  :hook ((web-mode . emmet-mode)
-         (css-mode . emmet-mode)))
+(use-package js2-mode)
+(use-package js2-refactor
+  :after (js2-mode)
+  :hook (js2-mode . js2-refactor-mode))
+
+(use-package tide
+  :after (company flycheck)
+  :hook ((typescript-ts-mode . tide-setup)
+         (tsx-ts-mode . tide-setup)
+         (typescript-ts-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
 
 (use-package json-mode)
 (use-package markdown-mode)
