@@ -7,6 +7,9 @@
 
 (require 'evil)
 
+(use-package emojify
+  :hook (after-init . global-emojify-mode))
+
 (use-package doom-themes
   :custom
   (doom-themes-enable-bold t)
