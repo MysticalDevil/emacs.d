@@ -65,38 +65,6 @@
 (use-package move-text
   :hook (after-init . move-text-default-bindings))
 
-;; Ivy - a generic completion frontend for Emacs, Swiper - isearch with an overview, and more. Oh, man!
-(use-package ivy
-  :defer 1
-  :demand
-  :hook (after-init . ivy-mode)
-  :config
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t
-        ivy-initial-inputs-alist nil
-        ivy-count-format "[%d/%d]"
-        enable-recursive-minibuffers t
-        ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
-
-(use-package counsel
-  :after (ivy)
-  :bind (("M-x" . counsel-M-x))
-  ("C-x C-f" . counsel-find-file)
-  ("C-c r" . counsel-recentf)
-  ("C-c g" . counsel-git))
-
-(use-package swiper
-  :after ivy
-  :bind (("C-s" . swiper))
-  ("C-r" . swiper-isearch)
-  :config (setq swiper-action-recenter t
-                swiper-include-line-number-in-search t))
-
-(use-package ivy-rich
-  :hook (ivy-mode . ivy-rich-mode)
-  :config
-  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line))
-
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
   :init

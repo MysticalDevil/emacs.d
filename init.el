@@ -34,6 +34,7 @@
 (require 'init-package)
 (require 'init-builtin)
 (require 'init-prog)
+(require 'init-completion)
 (require 'init-evil)
 (require 'init-ui)
 
