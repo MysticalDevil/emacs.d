@@ -5,6 +5,8 @@
 
 (toggle-frame-maximized)
 
+(require 'evil)
+
 (use-package doom-themes
   :custom
   (doom-themes-enable-bold t)
@@ -67,22 +69,32 @@
 (use-package centaur-tabs
   :demand
   :config
-  (centaur-tabs-mode t)
+  (setq centaur-tabs-style "bar"
+        centaur-tabs-height 32
+        centaur-tabs-set-icons t
+        centaur-tabs-show-new-tab-button t
+        centaur-tabs-set-modified-marker t
+        centaur-tabs-show-navigation-buttons t
+        centaur-tabs-set-bar 'under
+        centaur-tabs-gray-out-icons 'buffer
+        centaur-tabs-cycle-scope 'tabs)
   (centaur-tabs-headline-match)
-  :custom
-  (centaur-tabs-style "bar")
-  (centuar-tabs-height 48)
-  (centaur-tabs-set-icons t)
-  (centaur-tabs-plain-icons t)
-  (centaur-tabs-show-navigation-buttons t)
-  (centaur-tabs-set-bar 'under)
-  (x-unferline-at-decent-lint t)
-  (centaur-tabs-gray-out-icons 'buffer)
-  (centaur-tabs-sycle-scope 'tabs)
-  (centaur-tabs-set-modified-marker t)
-  :bind (("C-<prior>" . centaur-tabs-backward)
-         ("C-<next>" . centaur-tabs-forward))
-  :hook (dired-mode . centaur-tabs-local-mode))
+  (centaur-tabs-group-by-projectile-project)
+  (centaur-tabs-mode t)
+  :bind
+  (:map evil-normal-state-map
+              ("g t" . centaur-tabs-forward)
+              ("g T" . centaur-tabs-backward))
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward)
+  ("C-S-<prior>" . centaur-tabs-move-current-tab-to-left)
+  ("C-S-<next>" . centaur-tabs-move-current-tab-to-right)
+  :hook
+  (dired-mode . centaur-tabs-local-mode)
+  (dashboard-mode . centaur-tabs-local-mode)
+  (term-mode . centaur-tabs-local-mode)
+  (calendar-mode . centaur-tabs-local-mode)
+  (org-agenda-mode . centaur-tabs-local-mode))
 
 ;; An extensible emacs dashboard
 (use-package dashboard
