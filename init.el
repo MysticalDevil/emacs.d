@@ -11,9 +11,12 @@
 ;;; Check the minimum require version
 (let ((minver "26.1"))
   (when (version< emacs-version minver)
-    (error "Your Emacs is too old -- the config requires v%s or higher" minver)))
+    (error
+     "Your Emacs is too old -- the config requires v%s or higher" minver)))
 (when (version< emacs-version "27.1")
-  (message "Your Emacs is old, and some functionality in this config will be disabled. Please upgrade if posible."))
+  (message
+   "Your Emacs is old, and some functionality in this config
+will be disabled. Please upgrade if posible."))
 
 ;; Load the `lisp` directory
 (add-to-list 'load-path (expand-file-name (concat user-emacs-directory "lisp")))
@@ -21,13 +24,14 @@
 (defconst *spell-check-support-enabled* nil) ; Enable with t if you prefer
 (defconst *is-mac* (eq system-type 'darwin))
 (defconst *is-linux* (eq system-type 'gnu/linux))
-(defconst *is-windows* (or (eq system-type 'ms-dos) (eq system-type 'windows-nt)))
+(defconst *is-windows* (or
+                        (eq system-type 'ms-dos) (eq system-type 'windows-nt)))
 
 (defconst *ts-avaiable* (>= emacs-major-version 29))
 
 ;; Bootstrap config
 (setq custom-file (locate-user-emacs-file "custom.el"))
-(require 'init-site-lisp)               ; Must come before elpa, as ite may provide package.el
+(require 'init-site-lisp)
 (require 'init-system)
 (require 'init-funcs)
 (require 'init-elpa)

@@ -12,7 +12,8 @@
     (setq load-path
           (append
            (cl-remove-if-not #'file-directory-p
-                             (directory-files (expand-file-name parent-dir) t "^[^\.]"))
+                             (directory-files
+                              (expand-file-name parent-dir) t "^[^\.]"))
            load-path))))
 
 ;; Add both site-lisp and ite immediate subdirs to `load-path`
@@ -46,7 +47,8 @@
   "Return whether or not the library `name` can be ;paded from a
 source file under ~/.emacs.d/site-lisp/name/"
   (let ((f (locate-library (symbol-name name))))
-    (and f (string-prefix-p (file-name-as-directory (site-lisp-dir-for name)) f))))
+    (and f (string-prefix-p (file-name-as-directory
+                             (site-lisp-dir-for name)) f))))
 
 (provide 'init-site-lisp)
 ;;; init-site-lisp.el ends here

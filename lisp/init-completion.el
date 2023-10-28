@@ -53,7 +53,9 @@
   (company-tooltip-offset-display 'scrollbar)
   (company-begin-commands '(self-insert-command))
   (company-tempo-expand t)
-  (company-backends '((company-capf company-dabbrev company-ispell :separate) company-files))
+  (company-backends '(
+                      (company-capf company-dabbrev company-ispell :separate)
+                      company-files))
   :config
   (push '(company-semantic :with company-yasnippet) company-backends)
   :hook (prog-mode . company-mode))
@@ -67,11 +69,16 @@
   (setq completion-styles '(basic substring partial-completion flex)
         completion-category-defaults nil)
   :config
-  (orderless-define-completion-style orderless+initialism
-                                     (order-matching-styles '(orderless-initialism orderless-literal orderless-regexp)))
-  (setq completion-category-overrides '((command (styles orderless+initialism))
-                                        (symbol (styles orderless+initialism))
-                                        (variable (styles orderless+initialism)))))
+  (orderless-define-completion-style
+   orderless+initialism
+   (order-matching-styles
+    '(orderless-initialism
+      orderless-literal
+      orderless-regexp)))
+  (setq completion-category-overrides
+        '((command (styles orderless+initialism))
+          (symbol (styles orderless+initialism))
+          (variable (styles orderless+initialism)))))
 
 ;; A template system for Emacs
 (use-package yasnippet
@@ -85,7 +92,8 @@
              backend)
         (append (if (consp backend) backend (list backend))
                 '(:with company-yasnippet))))
-  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+  (setq company-backends
+        (mapcar #'company-mode/backend-with-yas company-backends))
   ;; unbind <TAB> completion
   (define-key yas-minor-mode-map [(tab)]        nil)
   (define-key yas-minor-mode-map (kbd "TAB")    nil)

@@ -57,8 +57,11 @@
   (anzu-replace-to-string-separator " => ")
   :config
   (global-anzu-mode +1)
-  (define-key isearch-mode-map [remap isearch-query-replace]  #'anzu-isearch-query-replace)
-  (define-key isearch-mode-map [remap isearch-query-replace-regexp] #'anzu-isearch-query-replace-regexp))
+  (define-key isearch-mode-map
+              [remap isearch-query-replace]  #'anzu-isearch-query-replace)
+  (define-key isearch-mode-map
+              [remap isearch-query-replace-regexp]
+              #'anzu-isearch-query-replace-regexp))
 
 ;; Make emacs scroll smoothly
 (use-package smooth-scrolling
@@ -160,7 +163,8 @@
         (set-face-attribute 'default nil :font "Microsoft Yahei Mono 9")
         (dolist (charset '(kana han symbol cjk-misc bopomofo))
           (set-fontset-font (frame-parameter nil 'font)
-                            charset (font-spec :family "Microsoft Yahei Mono" :size 12))))
+                            charset (font-spec
+                                     :family "Microsoft Yahei Mono" :size 12))))
     (set-face-attribute 'default nil :font "MesloLGS Nerd Font")))
 
 (provide 'init-ui)

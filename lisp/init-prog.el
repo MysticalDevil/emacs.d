@@ -98,14 +98,16 @@ eg.from datetime import datetime."
   (interactive)
   (check-run-execute "autoflake"
                      (shell-command
-                      (format "autoflake -i --remove-all-unused-imports %s" (buffer-file-name)))
+                      (format "autoflake -i --remove-all-unused-imports %s"
+                       (buffer-file-name)))
                      (revert-buffer t t t)))
 
 (add-hook 'python-mode-hook
           (lambda ()
             (add-hook 'before-save-hook #'python-isort nil t)
             (define-key python-mode-map (kbd "C-c p s") 'python-isort)
-            (define-key python-mode-map (kbd "C-c p r") 'python-remove-all-unused-imports)))
+            (define-key python-mode-map (kbd "C-c p r")
+                        'python-remove-all-unused-imports)))
 
 ;; Go
 (use-package go-mode)

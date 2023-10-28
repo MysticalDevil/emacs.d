@@ -62,9 +62,10 @@
   :hook (prog-mode . show-paren-mode))
 
 ;; Recent files
-(add-hook 'after-init-hook (lambda ()
-                             (recentf-mode 1)
-                             (add-to-list 'recentf-exclude '("~\/.config\/emacs\/elpa\/"))))
+(add-hook 'after-init-hook
+          (lambda ()
+            (recentf-mode 1)
+            (add-to-list 'recentf-exclude '("~\/.config\/emacs\/elpa\/"))))
 (setq-default recentf-max-menu-items 20
               recentf-max-saved-items 20)
 
@@ -83,6 +84,33 @@
 ;; Prettify symbols mode
 (use-package emacs
   :hook (prog-mode . prettify-symbols-mode))
+
+;; Electric Pair
+(add-hook 'python-mode-hook
+          (lambda ()
+            (define-key python-mode-map "\"" 'electric-pair)
+            (define-key python-mode-map "\'" 'electric-pair)
+            (define-key python-mode-map "(" 'electric-pair)
+            (define-key python-mode-map "[" 'electric-pair)
+            (define-key python-mode-map "{" 'electric-pair)))
+
+;; Whitespace
+(global-set-key "\C-c_w" 'whitespace-mode)
+(global-set-key "\C-c_t" 'whitespace-toggle-options)
+(global-set-key "\C-c=w" 'global-whitespace-mode)
+(global-set-key "\C-c=t" 'global-whitespace-toggle-options)
+
+;; Code ruler
+(use-package emacs
+  :hook
+  ((prog-mode . display-fill-column-indicator-mode)
+   (emacs-lisp-mode . (lambda ()
+                        (setq-default display-fill-column-indicator-column 80)))
+   (lisp-mode . (lambda ()
+                  (setq-default display-fill-column-indicator-column 80))))
+
+  :config
+  (setq-default display-fill-column-indicator-column 100))
 
 (provide 'init-builtin)
 ;;; init-builtin.el ends here
