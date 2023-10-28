@@ -172,7 +172,8 @@
   :demand t
   :config (treemacs-set-scope-type 'Tabs))
 
-(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+;; treemacs-perspective if you use perspective.el vs. persp-mode
+(use-package treemacs-persp
   :after (treemacs persp-mode) ;;or perspective vs. persp-mode
   :ensure t
   :config (treemacs-set-scope-type 'Perspectives))
@@ -221,6 +222,9 @@
   :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 (use-package highlight-parentheses
   :init (add-hook 'prog-mode-hook 'highlight-parentheses-mode))
+
+;; In the blink of an eye, the search is complete
+(use-package blink-search)
 
 (provide 'init-package)
 ;;; init-package.el ends here
