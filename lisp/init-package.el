@@ -219,12 +219,18 @@
 
 ;; Show the delimiters as rainbow color
 (use-package rainbow-delimiters
-  :init (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 (use-package highlight-parentheses
-  :init (add-hook 'prog-mode-hook 'highlight-parentheses-mode))
+  :hook (prog-mode . highlight-parentheses-mode))
 
 ;; In the blink of an eye, the search is complete
 (use-package blink-search)
+
+;; Emacs minor mode that keeps your code always indented.
+;; More reliable than electric-indent-mode.
+(use-package aggressive-indent-mode
+  :hook ((emacs-lisp-mode . aggressive-indent-mode)
+         (css-mode . aggressive-indent-mode)))
 
 (provide 'init-package)
 ;;; init-package.el ends here
