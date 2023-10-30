@@ -155,6 +155,15 @@
 (use-package highlight-indent-guides
   :hook (prog-mode . highlight-indent-guides-mode))
 
+;; Sidebar showing a "mini-map" of a buffer
+(use-package minimap
+  :bind ("C-c t" . minimap-mode)
+  :config
+  (setq minimap-window-location 'right
+        minimap-width-fraction 0.15
+        minimap-highlight-line t))
+
+
 ;; Change font on windows to reduce lag
 (use-package emacs
   :if (display-graphic-p)
