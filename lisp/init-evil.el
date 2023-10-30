@@ -2,21 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'ace-window)
-(require 'treemacs)
-
-(defun treemacs-is-treemacs-window-selected? ()
-  "Check if the treemacs window is selected (has focus)."
-  (and (boundp 'treemacs--buffer)
-       (eq (current-buffer) treemacs--buffer)))
-
-(defun +private/treemacs-back-and-forth ()
-  "Auto close treemacs window."
-  (interactive)
-  (if (treemacs-is-treemacs-window-selected?)
-      (aw-flip-window)
-    (treemacs-select-window)))
-
 (use-package evil
   :init
   (setq evil-want-integration t
@@ -35,10 +20,7 @@
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal)
-  (evil-set-leader 'normal (kbd "SPC"))
-  (evil-define-key 'normal 'global (kbd "<leader>ts")
-    #'+private/treemacs-back-and-forth)
-  (evil-define-key 'normal 'global (kbd "<leader>op") #'treemacs))
+  (evil-set-leader 'normal (kbd "SPC")))
 
 (use-package evil-surround
   :config

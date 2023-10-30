@@ -133,6 +133,8 @@
   (:map treemacs-mode-map
         ("/" . treemacs-advanced-helpful-hydra)
         ([mouse-1] . treemacs-single-click-expand-action))
+  (:map evil-normal-state-map
+        ("<leader> o p" . treemacs))
   :config
   (setq treemacs-missing-project-action 'remove
         treemacs-follow-after-init nil
@@ -195,7 +197,8 @@
 ;; Emacs package that displays available keybindings in popup
 (use-package which-key
   :defer nil
-  :config (which-key-mode))
+  :config (which-key-mode)
+  (setq which-key-allow-evil-operators t))
 
 ;; An alternative M-x interface for Emacs.
 (use-package amx
