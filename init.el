@@ -35,7 +35,7 @@ will be disabled. Please upgrade if posible."))
 (require 'init-system)
 (require 'init-funcs)
 (require 'init-elpa)
-
+(require 'init-evil)
 (require 'init-package)
 (require 'init-builtin)
 (require 'init-prog)

@@ -3,6 +3,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'evil)
+
 ;; A utility package to collect various Icon Fonts and propertize them within Emacs.
 ;; please install the non-free font Symbola. This issue usually occurs on Windows.
 ;; [Refs] https://github.com/seagle0128/doom-modeline
