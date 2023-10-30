@@ -164,6 +164,9 @@
         minimap-width-fraction 0.15
         minimap-highlight-line t))
 
+;; A light that follows your cursor around so you don't lose it!
+(use-package beacon
+  :init (beacon-mode))
 
 ;; Change font on windows to reduce lag
 (use-package emacs
