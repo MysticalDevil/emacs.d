@@ -157,7 +157,8 @@
 
 ;; Sidebar showing a "mini-map" of a buffer
 (use-package minimap
-  :bind ("C-c t" . minimap-mode)
+  :bind (:map evil-normal-state-map
+              ("<leader> t m" . minimap-mode))
   :config
   (setq minimap-window-location 'right
         minimap-width-fraction 0.15
