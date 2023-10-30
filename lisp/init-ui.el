@@ -151,7 +151,9 @@
                      (agenda . 5)))
   (dashboard-icon-type 'all-the-icons))
 
-
+;; Emacs minor mode to highlight indentation
+(use-package highlight-indent-guides
+  :hook (prog-mode . highlight-indent-guides-mode))
 
 ;; Change font on windows to reduce lag
 (use-package emacs

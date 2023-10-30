@@ -8,7 +8,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package eglot
-  :hook ((c-mode c++-mode go-mode js2-mode python-mode rust-mode web-mode) . eglot-ensure)
+  :hook ((c-mode c++-mode go-mode js2-mode python-mode rust-mode web-mode)
+         . eglot-ensure)
   :bind (("C-c e f" . #'eglot-format)
          ("C-c e i" . #'eglot-code-action-organize-imports)
          ("C-c e q" . #'eglot-code-action-qucik-fix))
@@ -17,7 +18,8 @@
   (defun eglot-actions-before-save ()
     (add-hook 'before-save-hook (lambda ()
                                   (call-interactively #'eglot-format)
-                                  (call-interactively #'eglot-code-action-organize-imports))))
+                                  (call-interactively
+                                   #'eglot-code-action-organize-imports))))
   (add-to-list 'eglot-server-programs '(web-mode "vls"))
   (add-hook 'eglot--managed-mode-hook #'eglot-actions-before-save))
 
@@ -99,7 +101,7 @@ eg.from datetime import datetime."
   (check-run-execute "autoflake"
                      (shell-command
                       (format "autoflake -i --remove-all-unused-imports %s"
-                       (buffer-file-name)))
+                              (buffer-file-name)))
                      (revert-buffer t t t)))
 
 (add-hook 'python-mode-hook
