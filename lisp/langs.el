@@ -1,22 +1,77 @@
 ;;; langs.el --- Language tooling: LSP/diagnostics/treesit -*- lexical-binding: t; -*-
 
+(defvar my/eglot-auto-install-servers t
+  "When non-nil, try to auto-install missing LSP servers for Eglot.")
+
+(defvar my/eglot-mode-server-map
+  '((python-mode . "ty")
+    (python-ts-mode . "ty")
+    (go-mode . "gopls")
+    (go-ts-mode . "gopls")
+    (rust-mode . "rust-analyzer")
+    (rust-ts-mode . "rust-analyzer")
+    (zig-mode . "zls")
+    (zig-ts-mode . "zls")
+    (c-mode . "clangd")
+    (c-ts-mode . "clangd")
+    (c++-mode . "clangd")
+    (c++-ts-mode . "clangd"))
+  "Major-mode to LSP server binary mapping.")
+
+(defvar my/eglot-server-install-commands
+  '(("ty" . "uv tool install --upgrade ty")
+    ("gopls" . "go install golang.org/x/tools/gopls@latest")
+    ("rust-analyzer" . "rustup component add rust-analyzer"))
+  "Install command per LSP server binary.
+Servers not listed here (e.g. clangd/zls) are expected to be installed manually.")
+
+(defvar my/eglot-install-attempted (make-hash-table :test 'equal)
+  "Track attempted server installs to avoid repeated installer runs.")
+
+(defun my/eglot-current-server-binary ()
+  "Return LSP server binary for current `major-mode', or nil."
+  (alist-get major-mode my/eglot-mode-server-map))
+
+(defun my/eglot-maybe-install-server ()
+  "Auto-install missing LSP server for current buffer when configured."
+  (when my/eglot-auto-install-servers
+    (when-let ((server (my/eglot-current-server-binary)))
+      (unless (or (executable-find server) (gethash server my/eglot-install-attempted))
+        (puthash server t my/eglot-install-attempted)
+        (if-let ((cmd (alist-get server my/eglot-server-install-commands nil nil #'string=)))
+            (progn
+              (message "Installing missing LSP server: %s" server)
+              (start-process-shell-command
+               (format "eglot-install-%s" server)
+               "*eglot-server-install*"
+               cmd))
+          (display-warning
+           'langs
+           (format "LSP server `%s' is missing; install it manually" server)
+           :warning))))))
+
+(defun my/eglot-auto-ensure ()
+  "Install missing server if possible, then ensure Eglot is started."
+  (my/eglot-maybe-install-server)
+  (eglot-ensure))
+
 ;; Core LSP client (built-in) with a focused server mapping per language.
 (use-package eglot
   :straight nil
   :commands (eglot eglot-ensure)
   :hook
-  ((python-mode . eglot-ensure)
-   (python-ts-mode . eglot-ensure)
-   (go-mode . eglot-ensure)
-   (go-ts-mode . eglot-ensure)
-   (rust-mode . eglot-ensure)
-   (rust-ts-mode . eglot-ensure)
-   (zig-mode . eglot-ensure)
-   (zig-ts-mode . eglot-ensure)
-   (c-mode . eglot-ensure)
-   (c-ts-mode . eglot-ensure)
-   (c++-mode . eglot-ensure)
-   (c++-ts-mode . eglot-ensure))
+  ((python-mode . my/eglot-auto-ensure)
+   (python-ts-mode . my/eglot-auto-ensure)
+   (go-mode . my/eglot-auto-ensure)
+   (go-ts-mode . my/eglot-auto-ensure)
+   (rust-mode . my/eglot-auto-ensure)
+   (rust-ts-mode . my/eglot-auto-ensure)
+   (zig-mode . my/eglot-auto-ensure)
+   (zig-ts-mode . my/eglot-auto-ensure)
+   (c-mode . my/eglot-auto-ensure)
+   (c-ts-mode . my/eglot-auto-ensure)
+   (c++-mode . my/eglot-auto-ensure)
+   (c++-ts-mode . my/eglot-auto-ensure))
   :config
   ;; Keep server startup deterministic and explicit.
   (dolist (entry '(((python-mode python-ts-mode) . ("ty" "server"))
