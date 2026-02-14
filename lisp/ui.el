@@ -5,7 +5,7 @@
 ;; --------------------
 ;; User-tunable knobs
 ;; --------------------
-(defvar my/font-size 15
+(defvar my/font-size 16
   "Default font size in points.")
 
 (defvar my/font-mono-candidates
@@ -15,6 +15,10 @@
 (defvar my/font-cjk-candidates
   '("Noto Sans CJK SC" "Source Han Sans SC" "WenQuanYi Micro Hei" "PingFang SC")
   "Preferred CJK fonts; first available wins.")
+
+(defvar my/font-ui-candidates
+  '("Noto Sans" "Source Han Sans SC" "WenQuanYi Micro Hei" "Sans Serif")
+  "Preferred variable-pitch UI fonts; first available wins.")
 
 (defvar my/theme 'doom-tokyo-night
   "Theme symbol, defaulting to Doom theme 'doom-tokyo-night.")
@@ -41,6 +45,9 @@
         (when-let ((mono (my/first-available-font my/font-mono-candidates)))
           (set-face-attribute 'default f :family mono :height (* my/font-size 10))
           (set-face-attribute 'fixed-pitch f :family mono))
+        ;; Use a dedicated variable-pitch font for help/start buffers.
+        (when-let ((ui (my/first-available-font my/font-ui-candidates)))
+          (set-face-attribute 'variable-pitch f :family ui :height (* my/font-size 10)))
         ;; Optional CJK fallback (only if you have CJK fonts installed)
         (when-let ((cjk (my/first-available-font my/font-cjk-candidates)))
           (dolist (charset '(han kana cjk-misc bopomofo))
