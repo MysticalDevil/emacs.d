@@ -4,9 +4,9 @@
 
 (require 'core)
 (require 'ui)
-;; (require 'package)
+(require 'packages)
+(require 'keybinds)
 ;; (require 'editing)
-;; (require 'keybinds)
 ;; (require 'langs)
 
 (provide 'init)

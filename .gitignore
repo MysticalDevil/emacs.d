@@ -4,5 +4,6 @@ todos.md
 *~
 auto-save-list/
 eln-cache/
+history
 *.elc
 straight

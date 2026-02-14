@@ -1,0 +1,64 @@
+;;; packages.el --- Package configuration (Vertico stack) -*- lexical-binding: t; -*-
+
+;; Keep minibuffer history across sessions (built-in).
+(use-package savehist
+  :straight nil
+  :init
+  (setq history-length 200)
+  (savehist-mode 1))
+
+;; Provide minibuffer completion UI.
+(use-package vertico
+  :init
+  (setq vertico-cycle t
+        vertico-resize t)
+  :config
+  (vertico-mode 1))
+
+;; Better directory navigation in Vertico minibuffer.
+(use-package vertico-directory
+  :straight nil
+  :after vertico
+  :bind (:map vertico-map
+              ("M-DEL" . vertico-directory-delete-word)
+              ("DEL"   . vertico-directory-delete-char)
+              ("RET"   . vertico-directory-enter)))
+
+;; Rich annotations in minibuffer completions.
+(use-package marginalia
+  :config
+  (marginalia-mode 1))
+
+;; Modern matching style for minibuffer completion.
+(use-package orderless
+  :init
+  ;; Orderless works best when used as the primary completion style.
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        ;; Keep file completion sane (partial-completion keeps paths ergonomic).
+        completion-category-overrides '((file (styles partial-completion)))))
+
+;; High-value commands: buffer switching, search, imenu, ripgrep, etc.
+(use-package consult
+  :init
+  ;; Reduce preview noise and keep it responsive.
+  (setq consult-preview-key "M-."
+        register-preview-delay 0.3
+        register-preview-function #'consult-register-format)
+  :config
+  ;; Optional: automatically preview in *Completions* where relevant.
+  (advice-add #'register-preview :override #'consult-register-window))
+
+;; Contextual actions for completion candidates.
+(use-package embark
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command))
+
+;; Make Embark collections previewable via Consult.
+(use-package embark-consult
+  :after (embark consult)
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+(provide 'packages)
+;;; packages.el ends here

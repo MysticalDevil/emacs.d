@@ -1,0 +1,18 @@
+;;; keybinds.el --- Global keybindings -*- lexical-binding: t; -*-
+
+;; Remap common built-ins to Consult equivalents.
+(global-set-key [remap switch-to-buffer] #'consult-buffer)
+(global-set-key [remap goto-line]        #'consult-goto-line)
+(global-set-key [remap yank-pop]         #'consult-yank-pop)
+(global-set-key [remap bookmark-jump]    #'consult-bookmark)
+
+;; Search / navigation.
+(global-set-key (kbd "C-c k") #'consult-ripgrep)
+(global-set-key (kbd "C-c i") #'consult-imenu)
+
+;; Embark actions.
+(global-set-key (kbd "C-.") #'embark-act)
+(global-set-key (kbd "C-;") #'embark-dwim)
+
+(provide 'keybinds)
+;;; keybinds.el ends here

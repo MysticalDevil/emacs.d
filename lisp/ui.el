@@ -56,7 +56,10 @@
 (defun my/apply-theme ()
   "Load `my/theme' and then re-apply face tweaks."
   (mapc #'disable-theme custom-enabled-themes)
-  (load-theme my/theme t)
+  (condition-case nil
+      (load-theme my/theme t)
+    (error
+     (load-theme 'wombat t)))
   (my/apply-faces))
 
 (defun my/apply-ui (&optional frame)
@@ -97,10 +100,10 @@
 ;; --------------------
 ;; Theme (built-in: modus-themes) + post-theme face stabilization
 ;; --------------------
-(require 'modus-themes)
-(setq modus-themes-bold-constructs t
-      modus-themes-italic-constructs t
-      modus-themes-mixed-fonts t)
+(when (require 'modus-themes nil t)
+  (setq modus-themes-bold-constructs t
+        modus-themes-italic-constructs t
+        modus-themes-mixed-fonts t))
 
 ;; Ensure face tweaks persist across theme changes.
 (when (boundp 'after-load-theme-hook)
