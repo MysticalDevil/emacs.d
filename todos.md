@@ -1,0 +1,79 @@
+# Emacs 配置 TODO（具体版）
+
+## 0. 当前能力确认（已具备）
+- [x] 启动性能优化（GC、file-name-handler、process I/O）
+  - 位置: `early-init.el`
+- [x] 包管理引导（`straight.el` + `use-package`）
+  - 位置: `lisp/core.el`
+  - 说明: 缺失包可在启动时自动安装
+- [x] 基础 UI（主题、字体、行号、高亮、括号）
+  - 位置: `lisp/ui.el`
+- [x] 现代补全栈（vertico/orderless/marginalia/consult/embark）
+  - 位置: `lisp/packages.el`
+- [x] 全局快捷键（搜索/跳转/动作）
+  - 位置: `lisp/keybinds.el`
+
+## 1. 语言开发基础（LSP / 诊断 / 语法树）
+- [x] 增加 `lisp/langs.el`，集中管理语言能力
+- [x] 集成 LSP 客户端（`eglot`）
+  - 已支持: `python`(`ty server`)、`go`(`gopls`)、`rust`(`rust-analyzer`)、`zig`(`zls`)、`c/c++`(`clangd`)
+- [x] 统一诊断显示
+  - `flymake` 行内/边栏策略
+  - 错误导航键位（next/prev）
+- [x] 启用 tree-sitter（`*-ts-mode` 优先）
+  - 常见语言模式映射与自动切换
+- [ ] 验收标准
+  - 打开对应语言文件后，LSP 自动连接
+  - `M-x flymake-show-buffer-diagnostics` 可看到诊断
+  - 语法高亮由 `*-ts-mode` 生效
+  - 注: 待你本机安装对应语言服务器后完成实机验收
+
+## 2. 格式化与补全（FMT / CMP）
+- [ ] 增加 `lisp/editing.el`
+- [ ] 保存时自动格式化（优先使用 LSP formatter）
+  - 对不支持 LSP formatter 的语言提供回退（如 `apheleia` 或外部格式化器）
+- [ ] 增加补全前端（建议 `corfu` + `cape`）
+- [ ] 验收标准
+  - 保存文件时格式自动应用
+  - 补全菜单在编程模式可用，响应延迟可接受
+
+## 3. 项目与文件树
+- [ ] 文件树插件（建议 `treemacs`）
+- [ ] 项目根识别与项目内切换（`project.el` + consult）
+- [ ] 常用键位
+  - 打开/关闭文件树
+  - 聚焦当前文件
+- [ ] 验收标准
+  - 在项目目录中可一键展示文件树并定位当前文件
+
+## 4. 导航与搜索增强
+- [ ] 保留并完善现有 Consult 键位
+- [ ] 增加跨项目搜索与替换工作流文档
+  - `consult-ripgrep`
+  - `embark` 批量动作
+- [ ] 验收标准
+  - 能在 2~3 次按键内完成“搜索 -> 跳转 -> 批处理”
+
+## 5. 配置结构与健壮性
+- [ ] 在 `init.el` 启用模块加载顺序说明（注释）
+- [ ] 所有模块统一 `provide/require` 命名规范
+- [ ] 增加缺失依赖的降级策略（可选）
+  - 无网络时不阻断启动，给出 warning
+- [ ] 验收标准
+  - `emacs --batch -Q -l early-init.el -l init.el` 无致命错误
+
+## 6. 文档与自检
+- [ ] 新增 `README.org` 或 `README.md`
+  - 说明系统依赖（ripgrep、字体、语言服务器）
+  - 首次启动会自动装包
+- [ ] 新增 `scripts/check-config.sh`
+  - 批处理加载检查
+  - 可选字节编译检查
+- [ ] 验收标准
+  - 新机器按文档 10 分钟内可完成可用环境
+
+## 7. 建议实施顺序
+1. `langs.el`（LSP + 诊断 + tree-sitter）
+2. `editing.el`（格式化 + 补全）
+3. 文件树与项目导航
+4. 文档与自检脚本

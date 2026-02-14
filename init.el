@@ -7,6 +7,6 @@
 (require 'packages)
 (require 'keybinds)
 ;; (require 'editing)
-;; (require 'langs)
+(require 'langs)
 
 (provide 'init)
