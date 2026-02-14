@@ -46,6 +46,47 @@
 (with-eval-after-load 'consult
   (global-set-key (kbd "C-c ! l") #'consult-flymake))
 
+;; Map major modes to tree-sitter language symbols.
+(defvar my/treesit-mode-language-alist
+  '((python-mode . python)
+    (python-ts-mode . python)
+    (go-mode . go)
+    (go-ts-mode . go)
+    (rust-mode . rust)
+    (rust-ts-mode . rust)
+    (zig-mode . zig)
+    (zig-ts-mode . zig)
+    (c-mode . c)
+    (c-ts-mode . c)
+    (c++-mode . cpp)
+    (c++-ts-mode . cpp)
+    (typescript-mode . typescript)
+    (typescript-ts-mode . typescript))
+  "Major-mode to tree-sitter language mapping.")
+
+(defun my/treesit-language-for-current-buffer ()
+  "Return the tree-sitter language symbol for current buffer, or nil."
+  (alist-get major-mode my/treesit-mode-language-alist))
+
+(defun my/treesit-install-current-language ()
+  "Install tree-sitter grammar for the current buffer language."
+  (interactive)
+  (if (not (fboundp 'treesit-install-language-grammar))
+      (message "Current Emacs build does not support tree-sitter")
+    (let ((lang (my/treesit-language-for-current-buffer)))
+      (cond
+       ((null lang)
+        (message "No tree-sitter language mapping for %s" major-mode))
+       ((and (fboundp 'treesit-language-available-p)
+             (treesit-language-available-p lang))
+        (message "tree-sitter grammar for %s is already installed" lang))
+       (t
+        (treesit-install-language-grammar lang)
+        (message "Installed tree-sitter grammar for %s" lang))))))
+
+;; Install tree-sitter grammar for the language of the current file.
+(global-set-key (kbd "C-c t i") #'my/treesit-install-current-language)
+
 ;; Prefer tree-sitter based major modes when grammar support exists.
 (use-package treesit-auto
   :config
