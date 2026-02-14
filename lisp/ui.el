@@ -16,8 +16,8 @@
   '("Noto Sans CJK SC" "Source Han Sans SC" "WenQuanYi Micro Hei" "PingFang SC")
   "Preferred CJK fonts; first available wins.")
 
-(defvar my/theme 'modus-vivendi
-  "Theme symbol, e.g. 'modus-vivendi or 'modus-operandi.")
+(defvar my/theme 'doom-tokyo-night
+  "Theme symbol, defaulting to Doom theme 'doom-tokyo-night.")
 
 (defvar my/line-numbers-style 'relative
   "Line number style: t | 'relative | nil.")
@@ -98,12 +98,31 @@
             (lambda () (display-line-numbers-mode -1))))
 
 ;; --------------------
-;; Theme (built-in: modus-themes) + post-theme face stabilization
+;; Theme (third-party: doom-themes) + post-theme face stabilization
 ;; --------------------
-(when (require 'modus-themes nil t)
-  (setq modus-themes-bold-constructs t
-        modus-themes-italic-constructs t
-        modus-themes-mixed-fonts t))
+(use-package doom-themes
+  :config
+  ;; Improves modeline and org face integration for Doom themes.
+  (doom-themes-visual-bell-config)
+  (doom-themes-org-config))
+
+;; --------------------
+;; Startup dashboard
+;; --------------------
+(use-package dashboard
+  :init
+  ;; Open a dedicated start screen with practical entry points.
+  (setq dashboard-startup-banner 'logo
+        dashboard-center-content t
+        dashboard-show-shortcuts nil
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-items '((recents  . 8)
+                          (projects . 5)
+                          (agenda   . 5)))
+  :config
+  (setq dashboard-banner-logo-title "Welcome back to Emacs")
+  (dashboard-setup-startup-hook))
 
 ;; Ensure face tweaks persist across theme changes.
 (when (boundp 'after-load-theme-hook)
