@@ -14,6 +14,7 @@
 (global-set-key (kbd "C-c s o") #'consult-outline)
 (global-set-key (kbd "C-c s g") #'consult-git-grep)
 (global-set-key (kbd "C-c s a") #'consult-eglot-symbols)
+(global-set-key (kbd "C-c s s") #'imenu-list-smart-toggle)
 
 ;; Project workflow and file tree.
 (global-set-key (kbd "C-c p p") #'project-switch-project)
@@ -36,13 +37,17 @@
 (global-set-key (kbd "C-c u u") #'undo-tree-visualize)
 (global-set-key (kbd "C-c u r") #'undo-tree-redo)
 
+;; Diagnostics panel.
+(global-set-key (kbd "C-c ! d") #'my/flymake-diagnostics-panel-toggle)
+
 (with-eval-after-load 'which-key
   (which-key-add-key-based-replacements
     "C-c g" "git"
     "C-c p" "project"
     "C-c s" "search"
     "C-c t" "tree"
-    "C-c u" "undo"))
+    "C-c u" "undo"
+    "C-c !" "diagnostics"))
 
 (provide 'keybinds)
 ;;; keybinds.el ends here

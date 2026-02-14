@@ -126,6 +126,14 @@
 (use-package treemacs-evil
   :after (treemacs evil))
 
+;; Dedicated symbols side panel.
+(use-package imenu-list
+  :commands (imenu-list-smart-toggle)
+  :init
+  (setq imenu-list-focus-after-activation t
+        imenu-list-size 0.28
+        imenu-list-position 'right))
+
 ;; Git porcelain and forge integrations.
 (use-package magit
   :commands (magit-status magit-file-dispatch magit-blame-addition)

@@ -97,6 +97,23 @@ Servers not listed here (e.g. clangd/zls) are expected to be installed manually.
   (when (fboundp 'flymake-show-diagnostics-at-end-of-line-mode)
     (add-hook 'flymake-mode-hook #'flymake-show-diagnostics-at-end-of-line-mode)))
 
+(defun my/flymake-diagnostics-panel-toggle ()
+  "Toggle the diagnostics buffer for current source buffer in a side window."
+  (interactive)
+  (let ((buf-name (format "*Flymake diagnostics for `%s'*" (buffer-name)))
+        (src-buf (current-buffer)))
+    (if-let ((win (get-buffer-window buf-name)))
+        (delete-window win)
+      (flymake-show-buffer-diagnostics)
+      (when-let ((diag-win (get-buffer-window buf-name)))
+        (set-window-dedicated-p diag-win t)
+        (set-window-buffer
+         (display-buffer-in-side-window
+          (window-buffer diag-win)
+          '((side . right) (slot . 1) (window-width . 0.33)))
+         (window-buffer diag-win))
+        (select-window (get-buffer-window src-buf))))))
+
 ;; Consult integration for buffer-wide diagnostics navigation.
 (with-eval-after-load 'consult
   (global-set-key (kbd "C-c ! l") #'consult-flymake))
