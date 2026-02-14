@@ -2,11 +2,23 @@
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
-(require 'core)
-(require 'ui)
-(require 'packages)
-(require 'keybinds)
-(require 'editing)
-(require 'langs)
+(defvar my/init-modules
+  ;; Loading order: bootstrap -> UI -> package/keymaps -> editing/langs.
+  '(core ui packages keybinds editing langs)
+  "Ordered list of feature modules to load from `lisp/'.")
+
+(defun my/require-module (feature)
+  "Require FEATURE and warn instead of aborting startup on failure."
+  (condition-case err
+      (require feature)
+    (error
+     (display-warning
+      'init
+      (format "Failed loading module `%s`: %s" feature (error-message-string err))
+      :warning)
+     nil)))
+
+(dolist (feature my/init-modules)
+  (my/require-module feature))
 
 (provide 'init)
