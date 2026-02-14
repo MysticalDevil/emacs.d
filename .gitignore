@@ -1,1 +1,8 @@
 todos.md
+# Emacs temp/backup files
+\#*\#
+*~
+auto-save-list/
+eln-cache/
+*.elc
+straight
