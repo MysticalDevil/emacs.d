@@ -31,5 +31,12 @@
 (global-set-key (kbd "C-.") #'embark-act)
 (global-set-key (kbd "C-;") #'embark-dwim)
 
+(with-eval-after-load 'which-key
+  (which-key-add-key-based-replacements
+    "C-c g" "git"
+    "C-c p" "project"
+    "C-c s" "search"
+    "C-c t" "tree"))
+
 (provide 'keybinds)
 ;;; keybinds.el ends here

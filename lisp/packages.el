@@ -60,6 +60,16 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;; Discover key prefixes and transient keymaps.
+(use-package which-key
+  :init
+  (setq which-key-idle-delay 0.5
+        which-key-idle-secondary-delay 0.05
+        which-key-sort-order #'which-key-key-order-alpha
+        which-key-max-description-length 36)
+  :config
+  (which-key-mode 1))
+
 ;; Vim-style modal editing.
 (use-package evil
   :init
