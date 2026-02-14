@@ -9,6 +9,10 @@
 ;; Search / navigation.
 (global-set-key (kbd "C-c k") #'consult-ripgrep)
 (global-set-key (kbd "C-c i") #'consult-imenu)
+(global-set-key (kbd "C-c s l") #'consult-line)
+(global-set-key (kbd "C-c s m") #'consult-mark)
+(global-set-key (kbd "C-c s o") #'consult-outline)
+(global-set-key (kbd "C-c s g") #'consult-git-grep)
 
 ;; Project workflow and file tree.
 (global-set-key (kbd "C-c p p") #'project-switch-project)
