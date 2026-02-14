@@ -59,5 +59,42 @@
     (add-hook 'completion-at-point-functions #'cape-keyword 0 t))
   (add-hook 'prog-mode-hook #'my/setup-cape-capf))
 
+;; Structured editing for brackets/quotes in code and minibuffer.
+(use-package smartparens
+  :hook
+  ((prog-mode . smartparens-mode)
+   (minibuffer-setup . smartparens-mode))
+  :config
+  (require 'smartparens-config))
+
+;; Vim-like surround motions/operators.
+(use-package evil-surround
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
+
+;; Better comment toggling for line/region.
+(use-package evil-nerd-commenter
+  :commands (evilnc-comment-or-uncomment-lines)
+  :bind
+  (("M-/" . evilnc-comment-or-uncomment-lines)))
+
+;; Highlight TODO/FIXME/NOTE style annotations.
+(use-package hl-todo
+  :hook
+  ((prog-mode . hl-todo-mode)
+   (text-mode . hl-todo-mode)))
+
+;; Keep diffs clean by trimming trailing whitespace on save.
+(use-package ws-butler
+  :hook
+  ((prog-mode . ws-butler-mode)
+   (text-mode . ws-butler-mode)))
+
+;; Incremental semantic region expansion (similar to visual selection growth).
+(use-package expand-region
+  :bind
+  (("C-=" . er/expand-region)))
+
 (provide 'editing)
 ;;; editing.el ends here
