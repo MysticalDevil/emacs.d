@@ -124,6 +124,22 @@
   (setq dashboard-banner-logo-title "Welcome back to Emacs")
   (dashboard-setup-startup-hook))
 
+;; --------------------
+;; Statusline (modeline)
+;; --------------------
+(use-package nerd-icons
+  :defer t)
+
+(use-package doom-modeline
+  :init
+  (setq doom-modeline-height 28
+        doom-modeline-icon t
+        doom-modeline-major-mode-icon t
+        doom-modeline-buffer-file-name-style 'truncate-with-project
+        doom-modeline-minor-modes nil)
+  :config
+  (doom-modeline-mode 1))
+
 ;; Ensure face tweaks persist across theme changes.
 (when (boundp 'after-load-theme-hook)
   (add-hook 'after-load-theme-hook #'my/apply-faces))
