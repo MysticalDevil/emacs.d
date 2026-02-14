@@ -34,5 +34,13 @@
     "Fallback no-op when `use-package' is unavailable."
     nil))
 
+;; Sync shell PATH and environment for GUI/daemon Emacs sessions.
+(use-package exec-path-from-shell
+  :if (or (daemonp) (display-graphic-p))
+  :config
+  (dolist (var '("PATH" "GOPATH" "GOBIN"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+
 (provide 'core)
 ;;; core.el ends here
