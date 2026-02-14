@@ -54,10 +54,21 @@
   :init
   (defun my/setup-cape-capf ()
     "Add useful Cape completion sources to current buffer."
+    (add-hook 'completion-at-point-functions #'cape-yasnippet -30 t)
     (add-hook 'completion-at-point-functions #'cape-file -20 t)
     (add-hook 'completion-at-point-functions #'cape-dabbrev -10 t)
     (add-hook 'completion-at-point-functions #'cape-keyword 0 t))
   (add-hook 'prog-mode-hook #'my/setup-cape-capf))
+
+;; Snippet engine and community snippet collection.
+(use-package yasnippet
+  :init
+  (setq yas-triggers-in-field t)
+  :config
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :after yasnippet)
 
 ;; Structured editing for brackets/quotes in code and minibuffer.
 (use-package smartparens
