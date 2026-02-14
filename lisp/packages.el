@@ -76,5 +76,30 @@
   :config
   (evil-collection-init))
 
+;; Built-in project management baseline.
+(use-package project
+  :straight nil
+  :init
+  (setq project-switch-commands
+        '((project-find-file "Find file" ?f)
+          (consult-ripgrep "Ripgrep" ?s)
+          (consult-project-buffer "Project buffer" ?b)
+          (project-dired "Dired" ?d))))
+
+;; File tree for project navigation.
+(use-package treemacs
+  :defer t
+  :init
+  (setq treemacs-width 34
+        treemacs-follow-after-init t
+        treemacs-is-never-other-window t)
+  :config
+  (treemacs-filewatch-mode 1)
+  (treemacs-follow-mode 1))
+
+;; Make Treemacs and Evil keybindings work together.
+(use-package treemacs-evil
+  :after (treemacs evil))
+
 (provide 'packages)
 ;;; packages.el ends here
