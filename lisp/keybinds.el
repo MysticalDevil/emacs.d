@@ -13,6 +13,7 @@
 (global-set-key (kbd "C-c s m") #'consult-mark)
 (global-set-key (kbd "C-c s o") #'consult-outline)
 (global-set-key (kbd "C-c s g") #'consult-git-grep)
+(global-set-key (kbd "C-c s a") #'consult-eglot-symbols)
 
 ;; Project workflow and file tree.
 (global-set-key (kbd "C-c p p") #'project-switch-project)
@@ -31,12 +32,17 @@
 (global-set-key (kbd "C-.") #'embark-act)
 (global-set-key (kbd "C-;") #'embark-dwim)
 
+;; Undo tree visualizer and explicit redo.
+(global-set-key (kbd "C-c u u") #'undo-tree-visualize)
+(global-set-key (kbd "C-c u r") #'undo-tree-redo)
+
 (with-eval-after-load 'which-key
   (which-key-add-key-based-replacements
     "C-c g" "git"
     "C-c p" "project"
     "C-c s" "search"
-    "C-c t" "tree"))
+    "C-c t" "tree"
+    "C-c u" "undo"))
 
 (provide 'keybinds)
 ;;; keybinds.el ends here

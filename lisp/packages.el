@@ -60,6 +60,11 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;; LSP symbol search via Consult (AST/semantic navigation experience).
+(use-package consult-eglot
+  :after (consult eglot)
+  :commands (consult-eglot-symbols))
+
 ;; Discover key prefixes and transient keymaps.
 (use-package which-key
   :init
@@ -85,6 +90,16 @@
   :after evil
   :config
   (evil-collection-init))
+
+;; Visual undo history tree.
+(use-package undo-tree
+  :init
+  (setq undo-tree-auto-save-history nil
+        undo-tree-enable-undo-in-region t
+        undo-tree-visualizer-timestamps t
+        undo-tree-visualizer-diff t)
+  :config
+  (global-undo-tree-mode 1))
 
 ;; Built-in project management baseline.
 (use-package project
