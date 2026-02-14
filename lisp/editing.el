@@ -80,6 +80,7 @@
 
 (defun my/enable-parinfer-rust-mode ()
   "Enable Parinfer and disable Smartparens in current Lisp buffer."
+  (setq-local indent-tabs-mode nil)
   (when (bound-and-true-p smartparens-mode)
     (smartparens-mode -1))
   (parinfer-rust-mode 1))
@@ -89,6 +90,7 @@
   :hook
   ((emacs-lisp-mode . my/enable-parinfer-rust-mode)
    (lisp-mode . my/enable-parinfer-rust-mode)
+   (lisp-interaction-mode . my/enable-parinfer-rust-mode)
    (lisp-data-mode . my/enable-parinfer-rust-mode)
    (clojure-mode . my/enable-parinfer-rust-mode)
    (scheme-mode . my/enable-parinfer-rust-mode))
