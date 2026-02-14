@@ -66,14 +66,15 @@
   - `emacs --batch -Q -l early-init.el -l init.el` 无致命错误
 
 ## 6. 文档与自检
-- [ ] 新增 `README.org` 或 `README.md`
+- [x] 新增 `README.org` 或 `README.md`
   - 说明系统依赖（ripgrep、字体、语言服务器）
   - 首次启动会自动装包
-- [ ] 新增 `scripts/check-config.sh`
+- [x] 新增 `scripts/check-config.sh`
   - 批处理加载检查
   - 可选字节编译检查
 - [ ] 验收标准
   - 新机器按文档 10 分钟内可完成可用环境
+  - 注: 待新机器环境实机验收
 
 ## 7. 建议实施顺序
 1. `langs.el`（LSP + 诊断 + tree-sitter）

@@ -1,0 +1,43 @@
+#+title: Emacs Config
+
+* Overview
+This repository contains a modular Emacs configuration:
+- ~early-init.el~: startup/runtime tuning
+- ~init.el~: ordered module loader
+- ~lisp/*.el~: feature modules (UI, packages, keybinds, langs, editing)
+
+* System Dependencies
+Required tools:
+- ~git~
+- ~ripgrep~ (used by ~consult-ripgrep~)
+- A patched Nerd Font (for ~doom-modeline~ icons; optional but recommended)
+
+Language servers (install what you use):
+- Python: ~ty server~
+- Go: ~gopls~
+- Rust: ~rust-analyzer~
+- Zig: ~zls~
+- C/C++: ~clangd~
+
+Optional formatters:
+- configured via LSP formatter first, fallback handled by ~apheleia~
+
+* First Start
+On first start, packages are bootstrapped via ~straight.el~ and installed automatically.
+If network is unavailable, startup degrades gracefully with warnings.
+
+* Validation
+Run:
+#+begin_src bash
+scripts/check-config.sh
+#+end_src
+
+Optional byte-compile check:
+#+begin_src bash
+scripts/check-config.sh --byte-compile
+#+end_src
+
+* Key Workflow
+- Project search: ~C-c k~ (~consult-ripgrep~)
+- Batch actions: ~C-.~ (~embark-act~)
+- Tree view: ~C-c t t~ / locate current file: ~C-c t f~
