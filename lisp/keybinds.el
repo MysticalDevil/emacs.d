@@ -21,6 +21,12 @@
 (global-set-key (kbd "C-c t t") #'treemacs)
 (global-set-key (kbd "C-c t f") #'treemacs-find-file)
 
+;; Git workflow.
+(global-set-key (kbd "C-c g s") #'magit-status)
+(global-set-key (kbd "C-c g f") #'magit-file-dispatch)
+(global-set-key (kbd "C-c g b") #'magit-blame-addition)
+(global-set-key (kbd "C-c g c") #'forge-dispatch)
+
 ;; Embark actions.
 (global-set-key (kbd "C-.") #'embark-act)
 (global-set-key (kbd "C-;") #'embark-dwim)

@@ -101,5 +101,26 @@
 (use-package treemacs-evil
   :after (treemacs evil))
 
+;; Git porcelain and forge integrations.
+(use-package magit
+  :commands (magit-status magit-file-dispatch magit-blame-addition)
+  :init
+  (setq magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+;; PR/MR and issue workflows from Magit.
+(use-package forge
+  :after magit)
+
+;; VC diff markers in fringe and Magit refresh integration.
+(use-package diff-hl
+  :hook
+  ((prog-mode . diff-hl-mode)
+   (text-mode . diff-hl-mode)
+   (dired-mode . diff-hl-dired-mode))
+  :config
+  (diff-hl-flydiff-mode 1)
+  (with-eval-after-load 'magit
+    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)))
+
 (provide 'packages)
 ;;; packages.el ends here
