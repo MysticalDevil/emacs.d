@@ -6,7 +6,7 @@
 (require 'ui)
 (require 'packages)
 (require 'keybinds)
-;; (require 'editing)
+(require 'editing)
 (require 'langs)
 
 (provide 'init)

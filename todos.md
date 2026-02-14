@@ -29,13 +29,14 @@
   - 注: 待你本机安装对应语言服务器后完成实机验收
 
 ## 2. 格式化与补全（FMT / CMP）
-- [ ] 增加 `lisp/editing.el`
-- [ ] 保存时自动格式化（优先使用 LSP formatter）
-  - 对不支持 LSP formatter 的语言提供回退（如 `apheleia` 或外部格式化器）
-- [ ] 增加补全前端（建议 `corfu` + `cape`）
+- [x] 增加 `lisp/editing.el`
+- [x] 保存时自动格式化（优先使用 LSP formatter）
+  - 已实现: `eglot-format-buffer` 优先，`apheleia` 回退
+- [x] 增加补全前端（`corfu` + `cape`）
 - [ ] 验收标准
   - 保存文件时格式自动应用
   - 补全菜单在编程模式可用，响应延迟可接受
+  - 注: 待你本机安装/配置格式化器后完成实机验收
 
 ## 3. 项目与文件树
 - [ ] 文件树插件（建议 `treemacs`）
