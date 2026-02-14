@@ -67,6 +67,23 @@
   :config
   (require 'smartparens-config))
 
+(defun my/enable-parinfer-rust-mode ()
+  "Enable Parinfer and disable Smartparens in current Lisp buffer."
+  (when (bound-and-true-p smartparens-mode)
+    (smartparens-mode -1))
+  (parinfer-rust-mode 1))
+
+;; Parinfer for Lisp-style editing (best paired with modal editing muscle memory).
+(use-package parinfer-rust-mode
+  :hook
+  ((emacs-lisp-mode . my/enable-parinfer-rust-mode)
+   (lisp-mode . my/enable-parinfer-rust-mode)
+   (lisp-data-mode . my/enable-parinfer-rust-mode)
+   (clojure-mode . my/enable-parinfer-rust-mode)
+   (scheme-mode . my/enable-parinfer-rust-mode))
+  :init
+  (setq parinfer-rust-auto-download t))
+
 ;; Vim-like surround motions/operators.
 (use-package evil-surround
   :after evil
