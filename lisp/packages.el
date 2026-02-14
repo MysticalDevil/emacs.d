@@ -60,5 +60,21 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;; Vim-style modal editing.
+(use-package evil
+  :init
+  ;; Must be set before loading Evil.
+  (setq evil-want-keybinding nil
+        evil-want-C-u-scroll t
+        evil-want-C-i-jump nil)
+  :config
+  (evil-mode 1))
+
+;; Extend Evil bindings into common built-in/third-party modes.
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
 (provide 'packages)
 ;;; packages.el ends here
