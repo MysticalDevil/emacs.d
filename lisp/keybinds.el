@@ -1,5 +1,11 @@
 ;;; keybinds.el --- Global keybindings -*- lexical-binding: t; -*-
 
+(declare-function consult-imenu "consult")
+(declare-function consult-eglot-symbols "consult-eglot")
+(declare-function treemacs "treemacs")
+(declare-function treemacs-find-file "treemacs")
+(declare-function forge-dispatch "forge-commands")
+
 ;; Remap common built-ins to Consult equivalents.
 (global-set-key [remap switch-to-buffer] #'consult-buffer)
 (global-set-key [remap goto-line]        #'consult-goto-line)
