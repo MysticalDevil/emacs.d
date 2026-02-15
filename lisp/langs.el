@@ -1,5 +1,7 @@
 ;;; langs.el --- Language tooling: LSP/diagnostics/treesit -*- lexical-binding: t; -*-
 
+(declare-function flymake-show-buffer-diagnostics "flymake")
+
 (defvar my/eglot-auto-install-servers t
   "When non-nil, try to auto-install missing LSP servers for Eglot.")
 
