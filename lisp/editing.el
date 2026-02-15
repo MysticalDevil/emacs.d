@@ -34,8 +34,11 @@
          (fboundp 'eglot-format-buffer))
     (eglot-format-buffer))
    ;; Fallback formatter for non-LSP or formatter-missing cases.
-   ((fboundp 'apheleia-format-buffer)
-    (apheleia-format-buffer))
+   ((and (fboundp 'apheleia-format-buffer)
+         (fboundp 'apheleia--get-formatters))
+    (if-let ((formatters (apheleia--get-formatters)))
+        (apheleia-format-buffer formatters)
+      (message "No Apheleia formatter configured for current buffer")))
    (t
     (message "No formatter available for current buffer"))))
 
