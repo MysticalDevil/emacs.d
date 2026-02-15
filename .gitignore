@@ -10,3 +10,4 @@ tree-sitter/
 parinfer-rust/
 *.elc
 straight
+.cache
