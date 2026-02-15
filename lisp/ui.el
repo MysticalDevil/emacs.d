@@ -21,10 +21,10 @@
   "Preferred variable-pitch UI fonts; first available wins.")
 
 (defvar my/theme 'doom-tokyo-night
-  "Theme symbol, defaulting to Doom theme 'doom-tokyo-night.")
+  "Theme symbol, defaulting to Doom theme `doom-tokyo-night'.")
 
 (defvar my/line-numbers-style 'relative
-  "Line number style: t | 'relative | nil.")
+  "Line number style: t | `relative' | nil.")
 
 ;; --------------------
 ;; Helpers
