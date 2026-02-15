@@ -1,5 +1,21 @@
 # Emacs 配置 TODO（具体版）
 
+## A. 配置问题审计（2026-02-15）
+- [ ] A1 修复 `straight.el` 与 `use-package` 集成，确保第三方包可稳定加载
+  - 现象: 启动出现 `Cannot load consult/vertico/...`，`:straight` 语义不生效
+- [ ] A2 修复 Go 文件模式关联与 LSP 触发
+  - 现象: `.go` 打开落到 `fundamental-mode`，`gopls` 不会启动
+- [ ] A3 修复 Rust 文件模式关联与 LSP 触发
+  - 现象: `.rs` 未命中 major mode，`rust-analyzer` 不会启动
+- [ ] A4 统一 Zig 文件后缀关联（含 `.zig.zon`），保持 `zig-ts-mode` 优先策略
+  - 现象: `.zig` 与 `.zig.zon` 路径行为不一致
+- [ ] A5 调整启动 warning 策略，避免把关键告警全部压制
+  - 现象: 排障时关键信号被隐藏
+- [ ] A6 修复 `scripts/check-config.sh` 的初始化路径，避免校验结果失真
+  - 现象: 脚本运行环境与真实配置目录不一致
+- [ ] A7 修复 LSP 自动安装失败后的重试机制
+  - 现象: 安装失败后同会话不再重试
+
 ## 0. 当前能力确认（已具备）
 - [x] 启动性能优化（GC、file-name-handler、process I/O）
   - 位置: `early-init.el`
