@@ -112,8 +112,10 @@
 (use-package doom-themes
   :config
   ;; Improves modeline and org face integration for Doom themes.
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config))
+  (when (fboundp 'doom-themes-visual-bell-config)
+    (doom-themes-visual-bell-config))
+  (when (fboundp 'doom-themes-org-config)
+    (doom-themes-org-config)))
 
 ;; --------------------
 ;; Startup dashboard
