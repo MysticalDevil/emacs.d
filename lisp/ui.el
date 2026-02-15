@@ -1,6 +1,8 @@
 ;;; ui.el --- UI setup (fonts/line numbers/theme/faces) -*- lexical-binding: t; -*-
 
 (require 'cl-lib)
+(declare-function doom-themes-visual-bell-config "doom-themes")
+(declare-function doom-themes-org-config "doom-themes")
 
 ;; --------------------
 ;; User-tunable knobs
