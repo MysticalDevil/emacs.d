@@ -49,16 +49,16 @@
   ;; Optional: automatically preview in *Completions* where relevant.
   (advice-add #'register-preview :override #'consult-register-window))
 
-;; Contextual actions for completion candidates.
-(use-package embark
-  :init
-  (setq prefix-help-command #'embark-prefix-help-command))
-
 ;; Make Embark collections previewable via Consult.
 (use-package embark-consult
   :after (embark consult)
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+;; Contextual actions for completion candidates.
+(use-package embark
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command))
 
 ;; LSP symbol search via Consult (AST/semantic navigation experience).
 (use-package consult-eglot
