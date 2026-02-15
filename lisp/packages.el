@@ -168,6 +168,25 @@
   (with-eval-after-load 'magit
     (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)))
 
+(defun my/go-major-mode-auto ()
+  "Use `go-ts-mode' when available and ready, otherwise fallback to `go-mode'."
+  (interactive)
+  (cond
+   ((and (fboundp 'go-ts-mode)
+         (fboundp 'treesit-available-p)
+         (fboundp 'treesit-language-available-p)
+         (treesit-available-p)
+         (treesit-language-available-p 'go))
+    (go-ts-mode))
+   ((fboundp 'go-mode)
+    (go-mode))
+   ((fboundp 'go-ts-mode)
+    (go-ts-mode))
+   (t
+    (fundamental-mode))))
+
+(add-to-list 'auto-mode-alist '("\\.go\\'" . my/go-major-mode-auto))
+
 ;; Zig language support with tree-sitter first, classic mode fallback.
 (use-package zig-mode
   :straight (zig-mode :type git :host github :repo "ziglang/zig-mode")
@@ -176,15 +195,38 @@
 (use-package zig-ts-mode
   :defer t)
 
+(defvar my/zig-enable-treesit t
+  "When non-nil, prefer `zig-ts-mode' for Zig buffers.")
+
+(defun my/zig-ts-workaround-grammar-mismatch ()
+  "Avoid known zig tree-sitter comment-query incompatibilities.
+Some zig grammar versions don't expose the `comment' node expected by
+`zig-ts-mode', which can trigger `treesit-query-error' during redisplay.
+Keep tree-sitter mode enabled, but drop the broken comment feature."
+  (when (derived-mode-p 'zig-ts-mode)
+    (setq-local treesit-font-lock-feature-list
+                (mapcar (lambda (level) (remq 'comment level))
+                        treesit-font-lock-feature-list))
+    (when (fboundp 'treesit-font-lock-recompute-features)
+      (treesit-font-lock-recompute-features))))
+
+(add-hook 'zig-ts-mode-hook #'my/zig-ts-workaround-grammar-mismatch)
+
 (defun my/zig-major-mode-auto ()
   "Use `zig-ts-mode' when available and ready, otherwise fallback to `zig-mode'."
   (interactive)
-  (if (and (fboundp 'zig-ts-mode)
+  (if (and my/zig-enable-treesit
+           (fboundp 'zig-ts-mode)
            (fboundp 'treesit-available-p)
            (fboundp 'treesit-language-available-p)
            (treesit-available-p)
            (treesit-language-available-p 'zig))
-      (zig-ts-mode)
+      (condition-case err
+          (zig-ts-mode)
+        (error
+         (message "zig-ts-mode failed (%s), fallback to zig-mode"
+                  (error-message-string err))
+         (zig-mode)))
     (zig-mode)))
 
 (add-to-list 'auto-mode-alist '("\\.zig\\'" . my/zig-major-mode-auto))

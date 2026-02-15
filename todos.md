@@ -3,7 +3,7 @@
 ## A. 配置问题审计（2026-02-15）
 - [x] A1 修复 `straight.el` 与 `use-package` 集成，确保第三方包可稳定加载
   - 现象: 启动出现 `Cannot load consult/vertico/...`，`:straight` 语义不生效
-- [ ] A2 修复 Go 文件模式关联与 LSP 触发
+- [x] A2 修复 Go 文件模式关联与 LSP 触发
   - 现象: `.go` 打开落到 `fundamental-mode`，`gopls` 不会启动
 - [ ] A3 修复 Rust 文件模式关联与 LSP 触发
   - 现象: `.rs` 未命中 major mode，`rust-analyzer` 不会启动
