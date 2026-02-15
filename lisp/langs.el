@@ -32,13 +32,27 @@ Servers not listed here (e.g. clangd/zls) are expected to be installed manually.
   "Return LSP server binary for current `major-mode', or nil."
   (alist-get major-mode my/eglot-mode-server-map))
 
+(defun my/eglot-ensure-buffers-for-server (server)
+  "Run `eglot-ensure' for open buffers that map to SERVER."
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (and (derived-mode-p 'prog-mode)
+                 (string= (or (my/eglot-current-server-binary) "") server)
+                 (fboundp 'eglot-managed-p)
+                 (not (eglot-managed-p))
+                 (fboundp 'eglot-ensure))
+        (ignore-errors (eglot-ensure))))))
+
 (defun my/eglot-handle-install-exit (server process)
   "Handle PROCESS exit for SERVER auto-install.
 Keep success markers, but clear failure markers to allow retries."
   (when (memq (process-status process) '(exit signal))
     (let ((code (process-exit-status process)))
       (if (zerop code)
-          (message "LSP server install finished: %s" server)
+          (progn
+            (message "LSP server install finished: %s" server)
+            ;; Retry connection for already-open buffers that previously failed.
+            (my/eglot-ensure-buffers-for-server server))
         (remhash server my/eglot-install-attempted)
         (display-warning
          'langs
