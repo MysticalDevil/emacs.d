@@ -4,7 +4,11 @@
 (declare-function treemacs-follow-mode "treemacs")
 (declare-function treemacs-load-theme "treemacs")
 (declare-function diff-hl-magit-post-refresh "diff-hl")
+(declare-function diff-hl-flydiff-mode "diff-hl")
 (declare-function magit-display-buffer-same-window-except-diff-v1 "magit-mode")
+(declare-function consult-register-format "consult")
+(declare-function consult-register-window "consult")
+(declare-function zig-mode "zig-mode")
 
 ;; Keep minibuffer history across sessions (built-in).
 (use-package savehist
