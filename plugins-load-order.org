@@ -1,0 +1,121 @@
+#+title: 插件与依赖关系、加载顺序
+
+* 模块加载顺序
+来自 `init.el` 的固定顺序：
+1. `core`
+2. `ui`
+3. `packages`
+4. `keybinds`
+5. `editing`
+6. `langs`
+
+该顺序决定了插件可用性：`keybinds/editing/langs` 依赖 `packages` 中已声明的插件。
+
+* core（引导层）
+- `straight.el`：包管理引导与构建目录（`straight/build/*`）加载。
+- `use-package`：优先走 straight 管理版本；不可用时才回退系统版本。
+- `exec-path-from-shell`：在 GUI/daemon 会话同步 `PATH/GOPATH/GOBIN`。
+
+* ui（界面层）
+| 插件 | 类型 | 依赖关系 | 加载方式 |
+| --- | --- | --- | --- |
+| `doom-themes` | 第三方 | 无显式 `:after` | 启动时加载 |
+| `dashboard` | 第三方 | 无显式 `:after` | 启动时加载 |
+| `nerd-icons` | 第三方 | 被 `doom-modeline` / `treemacs-nerd-icons` 使用 | 延迟 |
+| `doom-modeline` | 第三方 | 运行时依赖 `nerd-icons` | 启动时启用 |
+
+* packages（核心插件层）
+** 补全与导航
+| 插件 | 依赖关系 | 关键触发 |
+| --- | --- | --- |
+| `savehist` (builtin) | 无 | 启动即启用 |
+| `vertico` | 无 | 启动即启用 |
+| `vertico-directory` (builtin) | `:after vertico` | vertico 后加载 |
+| `marginalia` | 无 | 启动即启用 |
+| `orderless` | 无 | 启动即启用 |
+| `consult` | 无 | 启动即可用 |
+| `embark` | 无 | 启动即可用 |
+| `embark-consult` | `:after (embark consult)` | 两者加载后 |
+| `consult-eglot` | `:after (consult eglot)` | consult + eglot 后 |
+| `which-key` | 无 | 启动即启用 |
+
+** 编辑范式与项目
+| 插件 | 依赖关系 | 关键触发 |
+| --- | --- | --- |
+| `evil` | 无 | 启动即启用 |
+| `evil-collection` | `:after evil` | evil 后 |
+| `undo-tree` | 无 | 启动即启用 |
+| `project` (builtin) | 无 | 启动即可用 |
+
+** 文件树与图标
+| 插件 | 依赖关系 | 关键触发 |
+| --- | --- | --- |
+| `treemacs` | 无 | `:defer t` |
+| `treemacs-nerd-icons` | `:after (treemacs nerd-icons)` | treemacs + nerd-icons 后 |
+| `treemacs-evil` | `:after (treemacs evil)` | treemacs + evil 后 |
+
+** Git 与代码视图
+| 插件 | 依赖关系 | 关键触发 |
+| --- | --- | --- |
+| `imenu-list` | 无 | 命令触发 |
+| `magit` | 无 | 命令触发 |
+| `forge` | `:after magit` | magit 后 |
+| `diff-hl` | 与 `magit` 通过 `with-eval-after-load` 集成 | prog/text/dired hook |
+
+** 语言模式选择器（在本模块定义）
+- Go: `my/go-major-mode-auto`（优先 `go-ts-mode`，否则 `go-mode`）
+- Rust: `my/rust-major-mode-auto`（优先 `rust-ts-mode`，否则 `rust-mode`）
+- Zig: `my/zig-major-mode-auto`（优先 `zig-ts-mode`，否则 `zig-mode`）
+
+* keybinds（键位层）
+- 本模块主要绑定命令，不新增插件。
+- 依赖 `packages` 已声明命令，例如：
+  - `consult-*`
+  - `treemacs*`
+  - `magit*`
+  - `forge-dispatch`
+  - `consult-eglot-symbols`
+
+* editing（编辑增强层）
+| 插件 | 依赖关系 | 关键触发 |
+| --- | --- | --- |
+| `apheleia` | 与 `eglot` 格式化逻辑配合 | `prog-mode` hook |
+| `corfu` | 无 | 全局启用 |
+| `cape` | 与 `yasnippet` CAPF 可选集成 | `prog-mode` hook |
+| `yasnippet` | 无 | 全局启用 |
+| `yasnippet-snippets` | `:after yasnippet` | yasnippet 后 |
+| `smartparens` | 无 | `prog-mode`/`minibuffer` hook |
+| `parinfer-rust-mode` | 与 Lisp major modes 配合 | 多个 Lisp hook |
+| `evil-surround` | `:after evil` | evil 后 |
+| `evil-nerd-commenter` | 无 | 命令/快捷键触发 |
+| `hl-todo` | 无 | prog/text hook |
+| `ws-butler` | 无 | prog/text hook |
+| `expand-region` | 无 | 快捷键触发 |
+
+* langs（语言服务层）
+| 插件 | 类型 | 依赖关系 | 关键触发 |
+| --- | --- | --- | --- |
+| `eglot` | builtin | 与 `consult-eglot`、语言 major mode 配合 | 各语言 hook 自动 `eglot-ensure` |
+| `flymake` | builtin | 与 `consult-flymake` 配合 | `prog-mode` hook |
+| `treesit-auto` | 第三方 | 依赖 tree-sitter grammar | 全局启用 |
+
+** eglot 语言服务器映射
+- Python: `ty server`
+- Go: `gopls`
+- Rust: `rust-analyzer`
+- Zig: `zls`
+- C/C++: `clangd`
+
+* 外部依赖（非 Emacs 包）
+- 基础工具：`git`、`ripgrep`
+- 图标字体：Nerd Font（`nerd-icons`/`doom-modeline`/`treemacs-nerd-icons`）
+- LSP 可执行文件：`ty`、`gopls`、`rust-analyzer`、`zls`、`clangd`
+- 可选格式化器：由 `apheleia`/LSP formatter 决定
+
+* 依赖关系速览（简图）
+- `core` -> `use-package`/`straight` -> 其余模块插件声明
+- `packages:consult` + `langs:eglot` -> `consult-eglot`
+- `packages:embark` + `packages:consult` -> `embark-consult`
+- `packages:treemacs` + `ui:nerd-icons` -> `treemacs-nerd-icons`
+- `packages:evil` -> `evil-collection` / `evil-surround`
+- `packages:magit` -> `forge` / `diff-hl` 集成
