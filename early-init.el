@@ -1,5 +1,10 @@
 ;;; early-init.el --- Early init for Emacs 30+ -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;; Startup-time tuning and UI defaults applied before init.el loads.
+
+;;; Code:
+
 ;; Disable the built-in package.el auto-initialization
 (setq package-enable-at-startup nil)
 

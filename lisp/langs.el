@@ -1,5 +1,10 @@
 ;;; langs.el --- Language tooling: LSP/diagnostics/treesit -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;; Language support: LSP server management, diagnostics, and treesit policy.
+
+;;; Code:
+
 (declare-function flymake-show-buffer-diagnostics "flymake")
 (declare-function consult-flymake "consult")
 

@@ -1,5 +1,10 @@
 ;;; editing.el --- Formatting and in-buffer completion -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;; Editing UX: formatting, completion, snippets, structural editing helpers.
+
+;;; Code:
+
 (declare-function cape-file "cape")
 (declare-function cape-dabbrev "cape")
 (declare-function cape-keyword "cape")

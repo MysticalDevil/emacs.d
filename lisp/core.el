@@ -1,5 +1,10 @@
 ;;; core.el --- Package/bootstrap core -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;; straight/use-package bootstrap and process environment setup.
+
+;;; Code:
+
 ;; Prefer newer source files over stale byte-compiled artifacts.
 (setq load-prefer-newer t)
 

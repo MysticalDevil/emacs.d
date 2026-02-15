@@ -1,5 +1,10 @@
 ;;; keybinds.el --- Global keybindings -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;; Global keybindings for navigation, project, git, and diagnostics workflows.
+
+;;; Code:
+
 (declare-function consult-imenu "consult")
 (declare-function consult-eglot-symbols "consult-eglot")
 (declare-function treemacs "treemacs")

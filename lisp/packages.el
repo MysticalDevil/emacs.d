@@ -1,5 +1,10 @@
 ;;; packages.el --- Package configuration (Vertico stack) -*- lexical-binding: t; -*-
 
+;;; Commentary:
+;; Third-party package declarations and integration wiring.
+
+;;; Code:
+
 (declare-function treemacs-filewatch-mode "treemacs")
 (declare-function treemacs-follow-mode "treemacs")
 (declare-function treemacs-load-theme "treemacs")

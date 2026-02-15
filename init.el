@@ -1,4 +1,9 @@
-;;; init.el -*- lexical-binding: t; -*-
+;;; init.el --- Entry point for modular Emacs config -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;; Top-level entry that loads feature modules from `lisp/' in a fixed order.
+
+;;; Code:
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
@@ -22,3 +27,4 @@
   (my/require-module feature))
 
 (provide 'init)
+;;; init.el ends here
