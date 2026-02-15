@@ -10,12 +10,16 @@ fi
 
 echo "[check] loading config in batch mode..."
 emacs --batch -Q \
+  --init-directory "$ROOT_DIR" \
   -l "$ROOT_DIR/early-init.el" \
   -l "$ROOT_DIR/init.el"
 
 if [[ "$BYTE_COMPILE" -eq 1 ]]; then
   echo "[check] byte-compiling lisp/*.el..."
   emacs --batch -Q \
+    --init-directory "$ROOT_DIR" \
+    -l "$ROOT_DIR/early-init.el" \
+    -l "$ROOT_DIR/init.el" \
     --eval "(setq byte-compile-error-on-warn nil)" \
     -f batch-byte-compile "$ROOT_DIR"/lisp/*.el "$ROOT_DIR"/init.el
 fi
