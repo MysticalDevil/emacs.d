@@ -3,6 +3,14 @@
 ;; Keep indentation behavior predictable while still allowing CAPF completion.
 (setq tab-always-indent 'complete)
 
+;; Keep long code lines on one visual line (horizontal scroll instead of wrapping).
+(defun my/prog-no-wrap ()
+  "Disable soft wrapping in programming buffers."
+  (setq-local truncate-lines t
+              word-wrap nil))
+
+(add-hook 'prog-mode-hook #'my/prog-no-wrap)
+
 ;; Formatters fallback for languages without LSP formatting support.
 (use-package apheleia
   :config

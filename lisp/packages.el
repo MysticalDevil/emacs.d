@@ -122,6 +122,19 @@
   (treemacs-filewatch-mode 1)
   (treemacs-follow-mode 1))
 
+;; Use Nerd Font icons in Treemacs for clearer file-type visualization.
+(condition-case err
+    (use-package treemacs-nerd-icons
+      :straight (treemacs-nerd-icons :type git :host github :repo "rainstormstudio/treemacs-nerd-icons")
+      :after (treemacs nerd-icons)
+      :config
+      (treemacs-load-theme "nerd-icons"))
+  (error
+   (display-warning
+    'packages
+    (format "treemacs-nerd-icons unavailable: %s" (error-message-string err))
+    :warning)))
+
 ;; Make Treemacs and Evil keybindings work together.
 (use-package treemacs-evil
   :after (treemacs evil))
