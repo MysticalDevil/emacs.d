@@ -53,15 +53,27 @@
     nil))
 
 ;; Ensure user-local binaries are discoverable in all Emacs launch modes.
-(defun my/prepend-local-bin-to-path ()
-  "Prepend ~/.local/bin to both `exec-path' and PATH when available."
-  (let ((local-bin (expand-file-name ".local/bin" (or (getenv "HOME") "~"))))
-    (when (file-directory-p local-bin)
-      (add-to-list 'exec-path local-bin)
-      (unless (member local-bin (split-string (or (getenv "PATH") "") path-separator t))
-        (setenv "PATH" (concat local-bin path-separator (or (getenv "PATH") "")))))))
+(defun my/prepend-dir-to-path (dir)
+  "Prepend DIR to both `exec-path' and PATH when it exists."
+  (when (and (stringp dir) (file-directory-p dir))
+    (add-to-list 'exec-path dir)
+    (unless (member dir (split-string (or (getenv "PATH") "") path-separator t))
+      (setenv "PATH" (concat dir path-separator (or (getenv "PATH") ""))))))
 
-(my/prepend-local-bin-to-path)
+(defun my/prepend-dev-bin-dirs-to-path ()
+  "Prepend common user/dev binary directories to PATH and `exec-path'."
+  (let* ((home (or (getenv "HOME") "~"))
+         (gobin (getenv "GOBIN"))
+         (gopath (getenv "GOPATH")))
+    (dolist (dir (delq nil
+                       (list (expand-file-name ".local/bin" home)
+                             gobin
+                             (and gopath (expand-file-name "bin" gopath))
+                             ;; Keep support for custom Go root used on this machine.
+                             (expand-file-name ".local/lib/go/bin" home))))
+      (my/prepend-dir-to-path dir))))
+
+(my/prepend-dev-bin-dirs-to-path)
 
 ;; Sync shell PATH and environment for GUI/daemon Emacs sessions.
 (use-package exec-path-from-shell
@@ -70,8 +82,8 @@
   (dolist (var '("PATH" "GOPATH" "GOBIN"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize)
-  ;; Keep ~/.local/bin available even if shell startup files omit it.
-  (my/prepend-local-bin-to-path))
+  ;; Keep local dev bins available even if shell startup files omit them.
+  (my/prepend-dev-bin-dirs-to-path))
 
 (provide 'core)
 ;;; core.el ends here
