@@ -37,6 +37,11 @@ Optional byte-compile check:
 scripts/check-config.sh --byte-compile
 #+end_src
 
+Clear native compilation cache:
+#+begin_src bash
+scripts/clean-eln-cache.sh
+#+end_src
+
 * Key Workflow
 - Project search: ~C-c k~ (~consult-ripgrep~)
 - Batch actions: ~C-.~ (~embark-act~)
