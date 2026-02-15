@@ -1,5 +1,11 @@
 ;;; editing.el --- Formatting and in-buffer completion -*- lexical-binding: t; -*-
 
+(declare-function cape-file "cape")
+(declare-function cape-dabbrev "cape")
+(declare-function cape-keyword "cape")
+(declare-function cape-yasnippet "cape")
+(declare-function yasnippet-capf "yasnippet")
+
 ;; Keep indentation behavior predictable while still allowing CAPF completion.
 (setq tab-always-indent 'complete)
 
@@ -60,25 +66,26 @@
   :config
   (global-corfu-mode 1))
 
+(defun my/add-capf-if-available (fn depth)
+  "Add completion FN to current buffer when it is available.
+DEPTH controls hook ordering for `completion-at-point-functions'."
+  (when (fboundp fn)
+    (add-hook 'completion-at-point-functions fn depth t)))
+
+(defun my/setup-cape-capf ()
+  "Add useful Cape completion sources to current buffer."
+  (cond
+   ((fboundp 'cape-yasnippet)
+    (my/add-capf-if-available #'cape-yasnippet -30))
+   ((fboundp 'yasnippet-capf)
+    (my/add-capf-if-available #'yasnippet-capf -30)))
+  (my/add-capf-if-available #'cape-file -20)
+  (my/add-capf-if-available #'cape-dabbrev -10)
+  (my/add-capf-if-available #'cape-keyword 0))
+
 ;; Extra completion sources for CAPF.
 (use-package cape
   :init
-  (defun my/add-capf-if-available (fn depth)
-    "Add completion FN to current buffer when it is available.
-DEPTH controls hook ordering for `completion-at-point-functions'."
-    (when (fboundp fn)
-      (add-hook 'completion-at-point-functions fn depth t)))
-
-  (defun my/setup-cape-capf ()
-    "Add useful Cape completion sources to current buffer."
-    (cond
-     ((fboundp 'cape-yasnippet)
-      (my/add-capf-if-available #'cape-yasnippet -30))
-     ((fboundp 'yasnippet-capf)
-      (my/add-capf-if-available #'yasnippet-capf -30)))
-    (my/add-capf-if-available #'cape-file -20)
-    (my/add-capf-if-available #'cape-dabbrev -10)
-    (my/add-capf-if-available #'cape-keyword 0))
   (add-hook 'prog-mode-hook #'my/setup-cape-capf))
 
 ;; Snippet engine and community snippet collection.
