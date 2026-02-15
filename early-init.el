@@ -52,7 +52,7 @@
 (when (fboundp 'tool-bar-mode)   (tool-bar-mode -1))
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
-(setq warning-minimum-level :error)
+(setq warning-minimum-level :warning)
 
 (provide 'early-init)
 ;;; early-init.el ends here

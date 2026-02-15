@@ -9,7 +9,7 @@
   - 现象: `.rs` 未命中 major mode，`rust-analyzer` 不会启动
 - [x] A4 统一 Zig 文件后缀关联（含 `.zig.zon`），保持 `zig-ts-mode` 优先策略
   - 现象: `.zig` 与 `.zig.zon` 路径行为不一致
-- [ ] A5 调整启动 warning 策略，避免把关键告警全部压制
+- [x] A5 调整启动 warning 策略，避免把关键告警全部压制
   - 现象: 排障时关键信号被隐藏
 - [ ] A6 修复 `scripts/check-config.sh` 的初始化路径，避免校验结果失真
   - 现象: 脚本运行环境与真实配置目录不一致
