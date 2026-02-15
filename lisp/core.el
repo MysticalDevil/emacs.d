@@ -27,18 +27,22 @@
       (format "straight bootstrap unavailable: %s" (error-message-string err))
       :warning))))
 
-;; Ensure `use-package' is managed by straight, so `:straight' works as expected.
-(when (fboundp 'straight-use-package)
-  (condition-case err
-      (straight-use-package 'use-package)
-    (error
-     (display-warning
-      'core
-      (format "Failed bootstrapping use-package via straight: %s" (error-message-string err))
-      :warning))))
+;; Ensure `use-package' is :straight-aware when possible.
+(unless (and (require 'use-package nil 'noerror)
+             (fboundp 'use-package-normalize/:straight))
+  (when (fboundp 'straight-use-package)
+    (condition-case err
+        (progn
+          (straight-use-package 'use-package)
+          (require 'use-package nil 'noerror))
+      (error
+       (display-warning
+        'core
+        (format "Failed bootstrapping use-package via straight: %s" (error-message-string err))
+        :warning)))))
 
 ;; Fallback to a harmless no-op macro when :straight-aware use-package is unavailable.
-(unless (and (require 'use-package nil 'noerror)
+(unless (and (featurep 'use-package)
              (fboundp 'use-package-normalize/:straight))
   (display-warning
    'core
