@@ -7,7 +7,7 @@
   - 现象: `.go` 打开落到 `fundamental-mode`，`gopls` 不会启动
 - [x] A3 修复 Rust 文件模式关联与 LSP 触发
   - 现象: `.rs` 未命中 major mode，`rust-analyzer` 不会启动
-- [ ] A4 统一 Zig 文件后缀关联（含 `.zig.zon`），保持 `zig-ts-mode` 优先策略
+- [x] A4 统一 Zig 文件后缀关联（含 `.zig.zon`），保持 `zig-ts-mode` 优先策略
   - 现象: `.zig` 与 `.zig.zon` 路径行为不一致
 - [ ] A5 调整启动 warning 策略，避免把关键告警全部压制
   - 现象: 排障时关键信号被隐藏

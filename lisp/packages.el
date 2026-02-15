@@ -249,7 +249,7 @@ Keep tree-sitter mode enabled, but drop the broken comment feature."
          (zig-mode)))
     (zig-mode)))
 
-(add-to-list 'auto-mode-alist '("\\.zig\\'" . my/zig-major-mode-auto))
+(add-to-list 'auto-mode-alist '("\\.zig\\(?:\\.zon\\)?\\'" . my/zig-major-mode-auto))
 
 (provide 'packages)
 ;;; packages.el ends here
