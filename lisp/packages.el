@@ -1,5 +1,11 @@
 ;;; packages.el --- Package configuration (Vertico stack) -*- lexical-binding: t; -*-
 
+(declare-function treemacs-filewatch-mode "treemacs")
+(declare-function treemacs-follow-mode "treemacs")
+(declare-function treemacs-load-theme "treemacs")
+(declare-function diff-hl-magit-post-refresh "diff-hl")
+(declare-function magit-display-buffer-same-window-except-diff-v1 "magit-mode")
+
 ;; Keep minibuffer history across sessions (built-in).
 (use-package savehist
   :straight nil
@@ -153,6 +159,8 @@
 
 ;; PR/MR and issue workflows from Magit.
 (use-package forge
+  :init
+  (setq forge-add-default-bindings nil)
   :after magit)
 
 ;; VC diff markers in fringe and Magit refresh integration.
