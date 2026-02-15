@@ -4,6 +4,7 @@
 (setq load-prefer-newer t)
 
 (defvar bootstrap-version)
+(defvar straight-base-dir)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el"
                          user-emacs-directory))
@@ -27,26 +28,33 @@
       (format "straight bootstrap unavailable: %s" (error-message-string err))
       :warning))))
 
-;; Ensure `use-package' is :straight-aware when possible.
-(unless (and (require 'use-package nil 'noerror)
-             (fboundp 'use-package-normalize/:straight))
-  (when (fboundp 'straight-use-package)
+;; Make sure straight build artifacts are discoverable even when some repos are unavailable.
+(let ((build-dir (expand-file-name "straight/build" user-emacs-directory)))
+  (when (file-directory-p build-dir)
+    (dolist (dir (directory-files build-dir t "^[^.]" t))
+      (when (file-directory-p dir)
+        (add-to-list 'load-path dir)))))
+
+;; Prefer locally available straight-managed `use-package'; fallback to system package.
+(let* ((straight-repos-dir (and (boundp 'straight-base-dir)
+                                (expand-file-name "repos" straight-base-dir)))
+       (use-package-repo (and straight-repos-dir
+                              (expand-file-name "use-package" straight-repos-dir))))
+  (when (and (fboundp 'straight-use-package)
+             use-package-repo
+             (file-directory-p use-package-repo))
     (condition-case err
-        (progn
-          (straight-use-package 'use-package)
-          (require 'use-package nil 'noerror))
+        (straight-use-package 'use-package)
       (error
        (display-warning
         'core
-        (format "Failed bootstrapping use-package via straight: %s" (error-message-string err))
+        (format "Failed activating straight use-package: %s" (error-message-string err))
         :warning)))))
 
-;; Fallback to a harmless no-op macro when :straight-aware use-package is unavailable.
-(unless (and (featurep 'use-package)
-             (fboundp 'use-package-normalize/:straight))
+(unless (require 'use-package nil 'noerror)
   (display-warning
    'core
-   "use-package with :straight support not available; package declarations are skipped"
+   "use-package unavailable; package declarations are skipped"
    :warning)
   (defmacro use-package (&rest _args)
     "Fallback no-op when `use-package' is unavailable."
