@@ -5,6 +5,7 @@
 (declare-function cape-keyword "cape")
 (declare-function cape-yasnippet "cape")
 (declare-function yasnippet-capf "yasnippet")
+(declare-function parinfer-rust-mode "parinfer-rust-mode")
 
 ;; Keep indentation behavior predictable while still allowing CAPF completion.
 (setq tab-always-indent 'complete)
