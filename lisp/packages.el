@@ -3,8 +3,7 @@
 (declare-function treemacs-filewatch-mode "treemacs")
 (declare-function treemacs-follow-mode "treemacs")
 (declare-function treemacs-load-theme "treemacs")
-(declare-function diff-hl-magit-post-refresh "diff-hl")
-(declare-function diff-hl-flydiff-mode "diff-hl")
+(declare-function diff-hl-magit-post-refresh "diff-hl-magit")
 (declare-function magit-display-buffer-same-window-except-diff-v1 "magit-mode")
 (declare-function consult-register-format "consult")
 (declare-function consult-register-window "consult")
@@ -174,7 +173,8 @@
    (text-mode . diff-hl-mode)
    (dired-mode . diff-hl-dired-mode))
   :config
-  (diff-hl-flydiff-mode 1)
+  (when (fboundp 'diff-hl-flydiff-mode)
+    (diff-hl-flydiff-mode 1))
   (with-eval-after-load 'magit
     (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)))
 
