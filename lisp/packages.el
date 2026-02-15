@@ -155,5 +155,26 @@
   (with-eval-after-load 'magit
     (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh)))
 
+;; Zig language support with tree-sitter first, classic mode fallback.
+(use-package zig-mode
+  :straight (zig-mode :type git :host github :repo "ziglang/zig-mode")
+  :defer t)
+
+(use-package zig-ts-mode
+  :defer t)
+
+(defun my/zig-major-mode-auto ()
+  "Use `zig-ts-mode' when available and ready, otherwise fallback to `zig-mode'."
+  (interactive)
+  (if (and (fboundp 'zig-ts-mode)
+           (fboundp 'treesit-available-p)
+           (fboundp 'treesit-language-available-p)
+           (treesit-available-p)
+           (treesit-language-available-p 'zig))
+      (zig-ts-mode)
+    (zig-mode)))
+
+(add-to-list 'auto-mode-alist '("\\.zig\\'" . my/zig-major-mode-auto))
+
 (provide 'packages)
 ;;; packages.el ends here
