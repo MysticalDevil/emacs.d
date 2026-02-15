@@ -51,9 +51,7 @@
 
 ;; Make Embark collections previewable via Consult.
 (use-package embark-consult
-  :after (embark consult)
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  :after (embark consult))
 
 ;; Contextual actions for completion candidates.
 (use-package embark
