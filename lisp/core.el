@@ -5,6 +5,8 @@
 
 (defvar bootstrap-version)
 (defvar straight-base-dir)
+(defvar exec-path-from-shell-variables)
+(declare-function exec-path-from-shell-initialize "exec-path-from-shell")
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el"
                          user-emacs-directory))
