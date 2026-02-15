@@ -5,7 +5,7 @@
   - 现象: 启动出现 `Cannot load consult/vertico/...`，`:straight` 语义不生效
 - [x] A2 修复 Go 文件模式关联与 LSP 触发
   - 现象: `.go` 打开落到 `fundamental-mode`，`gopls` 不会启动
-- [ ] A3 修复 Rust 文件模式关联与 LSP 触发
+- [x] A3 修复 Rust 文件模式关联与 LSP 触发
   - 现象: `.rs` 未命中 major mode，`rust-analyzer` 不会启动
 - [ ] A4 统一 Zig 文件后缀关联（含 `.zig.zon`），保持 `zig-ts-mode` 优先策略
   - 现象: `.zig` 与 `.zig.zon` 路径行为不一致

@@ -187,6 +187,26 @@
 
 (add-to-list 'auto-mode-alist '("\\.go\\'" . my/go-major-mode-auto))
 
+;; Rust language support with tree-sitter first, classic mode fallback.
+(defun my/rust-major-mode-auto ()
+  "Use `rust-ts-mode' when available and ready, otherwise fallback to `rust-mode'."
+  (interactive)
+  (cond
+   ((and (fboundp 'rust-ts-mode)
+         (fboundp 'treesit-available-p)
+         (fboundp 'treesit-language-available-p)
+         (treesit-available-p)
+         (treesit-language-available-p 'rust))
+    (rust-ts-mode))
+   ((fboundp 'rust-mode)
+    (rust-mode))
+   ((fboundp 'rust-ts-mode)
+    (rust-ts-mode))
+   (t
+    (fundamental-mode))))
+
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . my/rust-major-mode-auto))
+
 ;; Zig language support with tree-sitter first, classic mode fallback.
 (use-package zig-mode
   :straight (zig-mode :type git :host github :repo "ziglang/zig-mode")
