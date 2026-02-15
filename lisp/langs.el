@@ -32,19 +32,43 @@ Servers not listed here (e.g. clangd/zls) are expected to be installed manually.
   "Return LSP server binary for current `major-mode', or nil."
   (alist-get major-mode my/eglot-mode-server-map))
 
+(defun my/eglot-handle-install-exit (server process)
+  "Handle PROCESS exit for SERVER auto-install.
+Keep success markers, but clear failure markers to allow retries."
+  (when (memq (process-status process) '(exit signal))
+    (let ((code (process-exit-status process)))
+      (if (zerop code)
+          (message "LSP server install finished: %s" server)
+        (remhash server my/eglot-install-attempted)
+        (display-warning
+         'langs
+         (format "Auto-install failed for `%s` (exit=%s); will retry later" server code)
+         :warning)))))
+
 (defun my/eglot-maybe-install-server ()
   "Auto-install missing LSP server for current buffer when configured."
   (when my/eglot-auto-install-servers
     (when-let ((server (my/eglot-current-server-binary)))
       (unless (or (executable-find server) (gethash server my/eglot-install-attempted))
-        (puthash server t my/eglot-install-attempted)
         (if-let ((cmd (alist-get server my/eglot-server-install-commands nil nil #'string=)))
-            (progn
-              (message "Installing missing LSP server: %s" server)
-              (start-process-shell-command
-               (format "eglot-install-%s" server)
-               "*eglot-server-install*"
-               cmd))
+            (condition-case err
+                (let ((proc (start-process-shell-command
+                             (format "eglot-install-%s" server)
+                             "*eglot-server-install*"
+                             cmd)))
+                  (puthash server t my/eglot-install-attempted)
+                  (set-process-sentinel
+                   proc
+                   (lambda (process _event)
+                     (my/eglot-handle-install-exit server process)))
+                  (message "Installing missing LSP server: %s" server))
+              (error
+               (remhash server my/eglot-install-attempted)
+               (display-warning
+                'langs
+                (format "Failed to start auto-install for `%s`: %s"
+                        server (error-message-string err))
+                :warning)))
           (display-warning
            'langs
            (format "LSP server `%s' is missing; install it manually" server)
