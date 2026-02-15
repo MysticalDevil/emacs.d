@@ -60,12 +60,22 @@
 ;; Extra completion sources for CAPF.
 (use-package cape
   :init
+  (defun my/add-capf-if-available (fn depth)
+    "Add completion FN to current buffer when it is available.
+DEPTH controls hook ordering for `completion-at-point-functions'."
+    (when (fboundp fn)
+      (add-hook 'completion-at-point-functions fn depth t)))
+
   (defun my/setup-cape-capf ()
     "Add useful Cape completion sources to current buffer."
-    (add-hook 'completion-at-point-functions #'cape-yasnippet -30 t)
-    (add-hook 'completion-at-point-functions #'cape-file -20 t)
-    (add-hook 'completion-at-point-functions #'cape-dabbrev -10 t)
-    (add-hook 'completion-at-point-functions #'cape-keyword 0 t))
+    (cond
+     ((fboundp 'cape-yasnippet)
+      (my/add-capf-if-available #'cape-yasnippet -30))
+     ((fboundp 'yasnippet-capf)
+      (my/add-capf-if-available #'yasnippet-capf -30)))
+    (my/add-capf-if-available #'cape-file -20)
+    (my/add-capf-if-available #'cape-dabbrev -10)
+    (my/add-capf-if-available #'cape-keyword 0))
   (add-hook 'prog-mode-hook #'my/setup-cape-capf))
 
 ;; Snippet engine and community snippet collection.
